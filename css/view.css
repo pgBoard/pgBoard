@@ -1,0 +1,31 @@
+.view
+{
+  list-style: none;
+  clear: both;
+}
+.view li
+{
+  list-style: none;
+  padding: .23em .35em;
+}
+.view .even a.memberlink { font-weight: bold; }
+.view .odd { padding-bottom: 1.25em;}
+.list li span { display: none; }
+
+.view li, .firstpost { margin-bottom: 1px; }
+
+.view pre
+{
+  font-family: monospace;
+  font-size: 1.2em;
+  float: left;
+  padding: 1em;
+  margin: 1em;
+}
+.postinfo, .controls { float: left; }
+.count { text-align: right; float: right; }
+.collapse
+{
+  padding: 10px;
+  margin-bottom: 1px;
+}

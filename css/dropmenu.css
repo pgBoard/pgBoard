@@ -1,0 +1,33 @@
+ul.drop
+{
+  list-style: none;
+  height: 1%;
+}
+.drop li
+{
+  float: left;
+  margin-right: 0.25em;
+  list-style: none;
+}
+a.domenu:hover { text-decoration: none; }
+
+.dropmenu .control { display: none; }
+.dropmenu:hover a, .dropmenu.active a, .hovermenu a
+{
+  padding: 0.2em;
+}
+.dropmenu:hover .control, .dropmenu.active .control, .hovermenu .control
+{
+  display: inline;
+  padding: 0.2em;
+  cursor: pointer;
+}
+
+.submenu
+{
+  list-style: none;
+	position: absolute;
+	width: 150px;
+  display: none;
+}
+.submenu li { list-style: none; }

@@ -1,0 +1,2 @@
+*/30 * * * * /path/to/indexer -c /path/to/sphinx.conf --quiet --all --rotate
+* * * * * /path/to/searchd -c /path/to/sphinx.conf

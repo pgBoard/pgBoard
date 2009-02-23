@@ -1,0 +1,118 @@
+/* Start Container */
+#content
+{
+  clear: both;
+  margin: 0px auto;
+  min-width: 650px;
+  width: 99%;
+}
+#content .pad { padding: 10px; }
+.title { float: left; }
+.subtitle { float: left; clear: left; }
+/* End Container */
+
+
+/* Start Login Box */
+#auth
+{
+  float: right;
+  text-align: right;
+  height: 50px;
+  margin-bottom: -50px;
+}
+#auth ol { list-style: none; _float: right; }
+#auth li { float: left; }
+#auth label { font-weight: bold; margin-left: 5px; }
+#auth input
+{
+  border: 1px solid #000;;
+  padding: .15em;
+  width: 75px;
+  font-weight: bold;
+  font-size: 1em;
+  *padding: .2em;
+}
+.loginbutton
+{
+  width: auto !important;
+  border: 1px solid #000 !important;
+  font-size: .9em !important;
+  *padding: 0em;
+}
+/* End Login Box */
+
+
+/* Start Quick Search */
+#quicksearch
+{
+  float: right;
+  position: relative;
+  width: 30%;
+  height: 50px;
+
+}
+.searchwrap
+{
+  right: 0px;
+  padding: .2em .5em;
+}
+
+.searchtext
+{
+  position: relative;
+  border: 1px solid #000;
+  padding: .15em;
+  width: 15em;
+  font-weight: bold;
+  font-size: 1em;
+  *padding: .2em;
+}
+.clearbutton
+{
+  border: 1px solid #000;
+  font-size: .9em !important;
+  *padding: 0em;
+}
+/* End Quick Search */
+
+
+/* Start Menus */
+.nav
+{
+  position: relative;
+  list-style: none;
+  height: 50px;
+  width: 70%;
+  _float: left;
+}
+.setdown { position:absolute; bottom:0px; z-index: 1; }
+.nav li
+{
+  list-style: none;
+  margin-left: 5px;
+  float: left;
+}
+.nav li a
+{
+  display: block;
+  padding: .33em 1em;  /* huge pain, do not touch */
+}
+.shiftup { margin-top: -1px; }
+.hr
+{
+  line-height: 1px;
+  font-size: 1px;
+  height: 1px;
+  clear: both;
+}
+.hr hr { display: none; }
+/* End Menu */
+
+.box
+{
+  padding: 1em;
+}
+
+/* Start Footer */
+#version { text-align: right; }
+/* End Footer */

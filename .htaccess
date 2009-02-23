@@ -1,0 +1,8 @@
+php_flag magic_quotes_gpc off
+
+RewriteEngine On
+RewriteRule ^topic/(.*)/(.*)/?$ /thread/view/$1/ [L,R]
+RewriteCond %{REQUEST_URI} !^/doc
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?cmd=$1

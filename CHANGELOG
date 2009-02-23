@@ -1,0 +1,23 @@
+pgboard: it's pretty good v2.9.5
+--------------------------------
+version 2.9.5 (2009-02-03)
+  - ignore disable flag
+  - ignore public flag
+
+version 2.9.4 (2009-01-27)
+  - customizable menus
+  
+version 2.9.3 (2009-01-25)
+  - registration password
+  - member name validation via regexp
+
+version 2.9.2 (2009-01-13)
+  - board plugin class
+  - constants/lang file cleanup
+  
+version 2.9.1 (2009-01-10)
+  - bugfix release
+  - sphinx search implementation
+
+version 2.9.0 (2008-06-28)
+  - initial migration release

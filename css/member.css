@@ -1,0 +1,24 @@
+.nophoto
+{
+  width: 320px;
+  height: 240px;
+}
+
+.pref
+{
+  float: left;
+  width: 100px;
+  font-weight: bold;
+}
+.prefdata
+{
+  float: left;
+}
+
+.memberinfo { list-style: none; }
+
+.memberinfo li
+{
+  clear: left;
+  padding-top: .5em;
+}

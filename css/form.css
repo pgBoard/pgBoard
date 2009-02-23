@@ -1,0 +1,73 @@
+.coreform fieldset { margin-top: 10px; }
+
+.coreform legend
+{
+  padding: 0px 2px;
+	font-weight: bold;
+	_margin: 0px -7px;
+	font-size: 1.2em;
+}
+
+.coreform label
+{
+  display: inline-block;
+	line-height: 1.8;
+	vertical-align: top;
+}
+
+.coreform fieldset ol
+{
+  margin: 0px;
+  padding: 0px;
+}
+
+.coreform fieldset li
+{
+  list-style: none;
+	padding: 0px;
+	margin: 0px;
+	clear: left;
+}
+
+.coreform fieldset fieldset
+{
+  border: none;
+	margin: 3px 0px 0px;
+}
+
+.coreform fieldset fieldset legend
+{
+  padding: 0px 0px 5px;
+	font-weight: normal;
+}
+
+.coreform fieldset fieldset label
+{
+  display: block;
+  width: auto;
+}
+
+.coreform label
+{
+  width: 110px;
+  display: block;
+  float: left;
+  font-weight: bold;
+}
+.coreform fieldset fieldset label { margin-left: 113px; } /* Width plus 3 (html space) */
+
+.coreform fieldset li { padding: 5px 10px 0px 10px; }
+
+.coreform .submit { margin-left: 119px; }
+
+.alert
+{
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.alertmsg
+{
+  float: right;
+  font-weight: bold;
+}
