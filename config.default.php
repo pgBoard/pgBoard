@@ -2,7 +2,7 @@
 define("LANG","en");
 
 define("ADMIN_EMAIL","admin@domain.com");
-define("DB","dbname=board user=Tyler password=develop");
+define("DB","dbname=board user=board password=board");
 define("DIR","/path/to/board/www/");
 define("SPHINX_HOST","localhost");
 define("SPHINX_PORT",3312);
