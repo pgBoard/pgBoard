@@ -1,5 +1,8 @@
 pgboard: it's pretty good v2.9.5
 --------------------------------
+version 2.9.6 (2009-02-xx)
+  - css cleanup
+
 version 2.9.5 (2009-02-03)
   - ignore disable flag
   - ignore public flag

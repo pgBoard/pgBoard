@@ -47,13 +47,6 @@ class BoardStyle
     foreach($theme as $type => $val)
     {
       $style = str_replace("%".strtoupper($type)."%",$val,$style);
-      
-      if($type == "fontsize")
-      {
-        $style = str_replace("%FONTSIZE-SMALL%",$val-0.2,$style);
-        $style = str_replace("%FONTSIZE-LH-SMALL%",$val+0.2,$style);
-        $style = str_replace("%FONTSIZE-SMALLER%",$val-0.4,$style);
-      }
     }
     print $style;
     if(session('italicread'))

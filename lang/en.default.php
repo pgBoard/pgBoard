@@ -83,7 +83,7 @@ a { color: %BODY_FONT%; }
 }
 .list .lastpost
 {
-  font-size: %FONTSIZE-SMALL%em;
+  font-size: 0.9em;
   line-height: %FONTSIZE-LH-SMALL%em
 }
 .dropmenu:hover a, .dropmenu:hover .control,
