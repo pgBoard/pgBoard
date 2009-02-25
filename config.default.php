@@ -30,8 +30,8 @@ define("FORM_SALT","aksjdsa9*^&*@&(@*22@*1");
 // functions allowed no matter what your login state
 $_allowed_ = array("threadmain","threadlist","threadview","threadviewpost",
                    "threadfirstpost","threadreply","threadpreviewpost",
-                   "threadtogglefavorite","mainlogin","donatemain","donateaccept",
-                   "membercreate","memberauthorize");
+                   "threadtogglefavorite","mainlogin","mainchangelog","donatemain",
+                   "donateaccept","membercreate","memberauthorize");
 
 // menu display
 $_menu_ = array("create account"     => array("link" => "/member/create/",

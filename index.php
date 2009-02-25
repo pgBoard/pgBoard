@@ -25,7 +25,7 @@ $Style->display($Style->get_theme());
 <div class="pad">
 <?php print $buffer; ?>
 <div class="small clear" style="text-align:right">page generated in <?php print (abs(microtime(true)-$__start__));?> seconds</div>
-<div class="small version" style="text-align:right"><a href="/main/changelog/">pgboard v<?php print VERSION;?></a></div>
+<div class="small version" style="text-align:right"><a href="/main/changelog/">pgBoard v<?php print VERSION;?></a></div>
 </div>
 </div>
 <div id="bottom"></div>

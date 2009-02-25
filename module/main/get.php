@@ -11,11 +11,11 @@ function changelog_get()
   $Base->type(MISC);
   $Base->title("pgBoard v".VERSION.SPACE.ARROW_RIGHT." Change Log");
   $Base->header();
-  print "<br/>\n";
-  print "<div style=\"font: 12px courier new\">";
+  print "<div class=\"box clear\" style=\"font: 12px courier new\">";
   print str_replace("»","&raquo;",nl2br(file_get_contents(DIR."/CHANGELOG")));
-  print "</pre>";
   print "<br/>\n";
+  print "<a href=\"http://pgboard.googlecode.com/\" onclick=\"window.open(this.href);return false\">click here to download pgBoard</a> &raquo;";
+  print "</div>";
   $Base->footer();
 }
 
