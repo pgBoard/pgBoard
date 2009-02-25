@@ -156,7 +156,8 @@ class Base
       if(!session('id') && $data['auth']) continue;
       if($data['link'] == "/member/create/" && session('id')) continue;
       $menu = str_replace(array("%MESSAGES%","%CHATTERS%"),array($messages,$chatters),$menu);
-      print "<li><a href=\"$data[link]\" title=\"$data[title]\">$menu</a></li>\n";
+      $code = $data['code'] != "" ? " $data[code]" : "";
+      print "<li><a href=\"$data[link]\" title=\"$data[title]\"$code>$menu</a></li>\n";
     }
     print "  </div></ul>\n";
 

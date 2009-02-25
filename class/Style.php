@@ -36,6 +36,7 @@ class BoardStyle
   
   function display($theme)
   {
+    global $Plugin;
     $style = STYLESHEET;
     $theme = unserialize($theme);
 
@@ -48,22 +49,28 @@ class BoardStyle
     {
       $style = str_replace("%".strtoupper($type)."%",$val,$style);
     }
-    print $style;
     if(session('italicread'))
     {
-      print ".subject a { font-style: italic; }";
-      print ".read .subject a { font-style: normal; }";
+      $style .= ".subject a { font-style: italic; }";
+      $style .= ".read .subject a { font-style: normal; }";
     }
     if(session('notabs'))
     {
-      print ".nav li, .nav li:hover, .nav li a, .nav li a:hover\n";
-      print "{\n";
-      print "  background-color: transparent;\n";
-      print "  border: none;\n";
-      print "  color: $theme[body_font];\n";
-      print "}\n";
-      print ".top li { padding-bottom: 5px; }\n";
+      $style .= ".nav li, .nav li:hover, .nav li a, .nav li a:hover\n";
+      $style .= "{\n";
+      $style .= "  background-color: transparent;\n";
+      $style .= "  border: none;\n";
+      $style .= "  color: $theme[body_font];\n";
+      $style .= "}\n";
+      $style .= ".top li { padding-bottom: 5px; }\n";
     }
+
+    // Start Style Override
+    $Plugin = new BoardPlugin;
+    $data = $Plugin->style_display($style);
+    // End Style Override
+    
+    print $style;
   }
   
   function external_css($css)
