@@ -58,8 +58,9 @@ CREATE TRIGGER thread_post_sync AFTER INSERT OR DELETE ON thread_post
 
 
 -- start thread_member
-CREATE UNIQUE INDEX thread_member_member_id_message_id ON thread_member(member_id,thread_id);
+CREATE UNIQUE INDEX thread_member_member_id_thread_id ON thread_member(member_id,thread_id);
 CREATE UNIQUE INDEX tm_mi_mi_lvr ON thread_member(member_id,thread_id,last_view_posts);
+CREATE INDEX thread_member_member_id_date_posted ON thread_member(member_id,date_posted);
 
 ALTER TABLE thread_member ADD FOREIGN KEY (member_id) REFERENCES member(id);
 ALTER TABLE thread_member ADD FOREIGN KEY (thread_id) REFERENCES thread(id);
