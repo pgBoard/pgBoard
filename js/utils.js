@@ -69,7 +69,7 @@ function loadposts(type,ob)
     success: function(html)
              {
                $('#view_'+id).append(html);
-               if(html) window.scroll(0,9999999999);
+               if(html) window.scroll(0,99999999);
                if(ob) ob.innerHTML = ob.save;
              }
   });
