@@ -21,7 +21,7 @@ class BoardList extends Base
     
     // start shared parsing
     $data['date'] = date(LIST_DATE_FORMAT,$data[LIST_DATE_LAST_POST]);
-    $data['subject'] = htmlentities($data[LIST_SUBJECT]);
+    $data['subject'] = htmlentities($data[LIST_SUBJECT],ENT_QUOTES,"UTF-8");
 
     $data['dot'] = $data['fav'] = $data['read'] = $data['me'] = "";
     $data['body'] = $Parse->run($data[LIST_FIRSTPOST_BODY]);
@@ -72,6 +72,7 @@ class BoardList extends Base
   function thread($stickies=false) // this stickies flag is crap, find a better way
   {
     global $Core;
+    
     if(!isset($this->data))
     {
       print "No data to display specified.";
@@ -118,6 +119,52 @@ class BoardList extends Base
       if(!$stickies) print "<ul class=\"{$class}\" id=\"noresults\" style=\"display:$display\">".NO_RESULTS."</ul>\n";
       print "</div>\n";
     }
+  }
+
+  function thread_xml($stickies)
+  {
+    global $Core;
+     
+    if(!isset($this->data))
+    {
+      print "No data to display specified.";
+      return;
+    }
+    if(!$this->data) $this->data = array();
+
+    $id = $this->name;
+    if($stickies) $id = $this->name."_stickies";
+
+    if(session('id')) $this->prep_favorites();
+    $xmldata = '';
+    foreach($this->data as $row)
+    {
+      $xmldata .= "  <thread type=\"list_{$id}\" class=\"data\">\n";
+      $field = $this->prep_data($row);
+      $class = ($class==CSS_ODD?CSS_EVEN:CSS_ODD);
+      #$firstpost = "<a href=\"javascript:;\" onclick=\"firstpost('{$this->table}',{$field[LIST_ID]},this);return false;\">".ARROW_RIGHT."</a>&nbsp;";
+      #if(session('nofirstpost')) $firstpost = "";
+      #print "  <class=\"{$class}$field[me]\" id=\"{$this->table}_{$field[LIST_ID]}\">\n";
+      #print "<ul class=\"list$field[read]\" ondblclick=\"location.href='/{$this->table}/view/{$field[LIST_ID]}/&r={$field[LIST_POSTS]}'\">\n";
+      #print "  <li class=\"readbar\">&nbsp;</li>\n";
+      $xmldata .= "    <member>{$field[LIST_CREATOR_NAME]}</member>\n";
+      #print "  <li class=\"subject\">\n";
+      #print "    <div class=\"extra\">\n";
+      #print "      $field[dot]&nbsp;$field[fav]{$firstpost}\n";
+      #print "    </div>\n";
+      #print "    <span>Subject: </span>\n";
+      $xmldata .= "    <thread_id>{$field[LIST_ID]}</thread_id>\n";
+      #print "    <a href=\"/{$this->table}/view/{$field[LIST_ID]}/&p={$field[LIST_POSTS]}\">$field[subject]</a>\n";
+      #print "  </li>\n";
+      #print "  <li class=\"posts\"><span>Posts: </span>{$field[LIST_POSTS]}</li>\n";
+      #print "  <li class=\"lastpost\"><span>Last Post By:</span>".$Core->member_link($field[LIST_LAST_POSTER_NAME])." on $field[date]</li>\n";
+      #print "  <li class=\"readbar\" style=\"float:right\">&nbsp;</li>\n";
+      #print "</ul>\n";
+      #print "<div id=\"fp_{$field[LIST_ID]}\" class=\"firstpost\"></div>\n";
+      #print "</div>\n";
+      $xmldata .= "  </thread>\n";
+    }
+    return $xmldata; // return the data
   }
   
   function message() { $this->thread(); }
