@@ -65,6 +65,27 @@ function create_post()
   exit_clean();
 }
 
+function forgotpassword_post()
+{
+  global $DB;
+  $DB->query("SELECT
+                name
+              FROM
+                member
+              WHERE
+                lower(email_signup)=$1",array(post('email_signup')));
+  if($member = $DB->load_result())
+  {
+    $link = "test";
+    send_email(post('email_signup'),FORGOT_PASSWORD_SUBJECT,str_replace(array("%NAME%","%LINK"),array($member,$link),FORGOT_PASSWORD_EMAIL));
+    print "Notification sent!";
+  }
+  else
+  print "Unable to locate member.";
+
+  exit_clean();
+}
+
 function edit_post()
 {
   global $DB,$Security;

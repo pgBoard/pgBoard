@@ -161,6 +161,7 @@ function ignore_get()
 
   if(cmd(3) != MD5(session_id()) || !IGNORE_ENABLED) return to_index();
   if($Core->idfromname(id()) == session('id')) return to_index();
+  if(!$Core->can_ignore(session('id'))) return to_index();
   
   if(!$listen = $Core->idfromname(id()))
   {
@@ -206,5 +207,19 @@ function listen_get()
   }
   else
   print "<h3>Something got fucked.</h3>\n";
+}
+
+function reset_get()
+{
+  global $DB;
+  $DB->query("SELECT id,reset FROM member WHERE reset=$1",array(id()));
+  if($data = $DB->load_array())
+  { 
+    $pass = md5($data['reset']);
+    $update = array("reset"=>null,"pass"=>md5($pass));
+    $DB->update("member","id",$data['id'],$update);
+    print "Your new password: $pass";
+  }
+  exit_clean();
 }
 ?>
