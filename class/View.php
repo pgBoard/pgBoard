@@ -29,7 +29,6 @@ class BoardView extends Base
     }
 
     $data['body'] = $Parse->run($data[VIEW_BODY]);
-
     switch($this->type)
     {
       case VIEW_THREAD_SEARCH:
@@ -126,7 +125,6 @@ class BoardView extends Base
       $field = $this->prep_data($row);
       $count = "#{$i}";
       if(session('nopostnumber')) $count = "";
-      
       print "<div id=\"view_".id()."_{$field[VIEW_ID]}_{$i}\" class=\"post\">\n";
       print "<ul class=\"view\" id=\"post_{$field[VIEW_ID]}\">\n";
       print "  <li class=\"info even$field[me]\">\n";
@@ -149,6 +147,98 @@ class BoardView extends Base
         print "<div class=\"post\"><ul class=\"view\"><li class=\"odd\" id=\"noresults\">".NO_RESULTS."</li></ul></div>\n";
       }
       print "</div>\n";
+    }
+  }
+
+  function thread_xml()
+  {
+    global $DB,$Core;
+    
+    if(!isset($this->data))
+    {
+      print "No data to display specified.";
+      return;
+    }
+    if(!$this->data) $this->data = array();
+    
+    if(session('id') && ($this->type == VIEW_THREAD || $this->type == VIEW_MESSAGE) && !$this->ajax)
+    {
+      if($list = array_keys($Core->list_ignored(session('id')))) $list = implode(",",$list);
+      else
+      $list = "0";
+
+      // minimum number of posts before collapse
+      #$mincollapse = is_numeric(session('mincollapse')) ? session('mincollapse') : COLLAPSE_DEFAULT;
+
+      // number of posts to leave open after collapse
+      #$collapseopen = is_numeric(session('collapseopen')) ? session('collapseopen') : COLLAPSE_OPEN_DEFAULT;
+      #if($collapseopen < 1) $collapseopen = 1;
+
+      // offset collapsing by the number of people ignored
+      #$offsetignores = $DB->value("SELECT count(*) FROM {$this->table}_post WHERE {$this->table}_id=$1 AND member_id IN ($list)",array(id()));
+
+      #$this->collapse($DB->value("SELECT COALESCE(last_view_posts,0)-$offsetignores-$collapseopen FROM {$this->table}_member WHERE {$this->table}_id=$1 AND member_id=$2",array(id(),session('id'))));
+
+      // don't collapse if there aren't new posts or if we are offsetting/limiting
+      #if(cmd(3,true) ||
+      #   cmd(4,true) ||
+      #   session('nocollapse') ||
+      #   count($this->data) < $mincollapse ||
+      #   $this->collapse <= 0) $this->collapse(false);
+    }
+
+    $i=1;
+    if(cmd(3,true)) $i = cmd(3,true)+1;
+
+    if(!$this->ajax)
+    {
+      $hidemedia = get('media') ? "true" : "false";
+
+      #print "<div id=\"view_".id()."\">\n";
+      if($this->collapse && $this->type != VIEW_THREAD_PREVIEW && $this->type != VIEW_MESSAGE_PREVIEW)
+      {
+        print "<div class=\"post clear\" id=\"uncollapse\">\n";
+        print "  <ul class=\"postbody odd collapse\">\n";
+        print "    <a href=\"javascript:;\" onclick=\"uncollapse('{$this->table}',$this->collapse,$hidemedia,this);\">show read (".($this->collapse)." posts)</a>\n";
+        print "  </ul>\n";
+        print "</div>\n";
+        $this->data(array_slice($this->data,$this->collapse));
+        $i = $this->collapse+1;
+      }
+    } // End thread_xml
+   
+    foreach($this->data as $row)
+    {
+      $field = $this->prep_data($row);
+      $count = "#{$i}";
+      #if(session('nopostnumber')) $count = "";
+      print "<post number=\"$i\">";
+      print "<id>{$field[VIEW_ID]}</id>\n";
+      print "<member>{$field[VIEW_CREATOR_NAME]}</member>\n";
+      print "<date>{$field['date']}</date>\n";
+      print "<body>{$field['body']}</body>\n";
+      print "</post>\n";
+      #print "<ul class=\"view\" id=\"post_{$field[VIEW_ID]}\">\n";
+      #print "  <li class=\"info even$field[me]\">\n";
+      #print "    <div class=\"postinfo\">".$Core->member_link($field[VIEW_CREATOR_NAME])." posted this on $field[date]</div>\n";
+      #print "    <div class=\"controls\">$field[quote]$field[admin]</div>\n";
+      #print "    <div class=\"count\"><a href=\"#{$i}\" name=\"$i\">{$count}</a></div>\n";
+      #print "    <div class=\"clear\"></div>\n";
+      #print "  </li>\n";
+      #print "  <li class=\"postbody odd\">\n";
+      #print $field['body'];
+      #print "  </li>\n";
+      #print "</ul>\n";
+      #print "</div>\n";
+      $i++;
+    }
+    if(!$this->ajax)
+    {
+      if(!count($this->data))
+      {
+        print "<div class=\"post\"><ul class=\"view\"><li class=\"odd\" id=\"noresults\">".NO_RESULTS."</li></ul></div>\n";
+      }
+      #print "</div>\n";
     }
   }
 
