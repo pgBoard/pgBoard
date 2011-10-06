@@ -130,5 +130,5 @@ function send_email($email,$subject,$body,$from="donotreply@crewcial.org")
   if(substr($email,0,1) == ",") $email = substr($email,1);
   $headers = "From: $from\n";
   $headers .= "Content-Type: text/html; charset=iso-8859-1";
-  return mail($email,$subject,$body,$headers);
+  return mail($email,$subject,$body,$headers,"-f{$from}");
 }
