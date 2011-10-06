@@ -126,13 +126,6 @@ a { color: %BODY_FONT%; }
   border: 1px solid %BODY%;
   color: %EVEN_FONT%;
 }
-.spoiler
-{
-  cursor: pointer;
-  background-color: %ME%;
-  color: %ME_FONT%;
-  border: 1px outset;
-}
 .small { font-size: %FONTSIZE-SMALL%em; }
 .smaller { font-size: %FONTSIZE-SMALLER%em; }
 blockquote { font-style: italic; }
@@ -161,7 +154,6 @@ http://www.google.com/ <-- automatic link
 [sup]superscript[/sup]
 [youtube]http://www.youtube.com/watch?v=WAwLYJYsa0A[/youtube]
 [quote]quote[/quote]
-[spoiler]hidden text here[/spoiler]
 </pre>
 <div class='clear'></div>
 </div>");
