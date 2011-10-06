@@ -37,6 +37,7 @@ define("MISC",2000);
 class Base
 {
   public $ajax = false;     // data only flag
+  public $xml = false;
   public $name;             // unique name
   public $title;            // title to display
   public $type;             // type of call
@@ -55,6 +56,7 @@ class Base
     }
     if(session('blocked')) $this->blocked(session('blocked'));
     if(get('ajax')) $this->ajax = true;
+    if(get('xml')) $this->xml = true;
   }
 
   function title($title)
@@ -96,6 +98,7 @@ class Base
   {
     global $Core,$Security;
     if($this->ajax) return;
+    if($this->xml) return;
 
     print "<div id=\"wrap_{$this->name}\" class=\"clear\">\n";
     print "  <h3 class=\"title\">$this->title</h3>\n";
@@ -121,6 +124,7 @@ class Base
     global $Core,$_menu_;
     
     if(!isset($this->type) || $this->ajax) return;
+    if(!isset($this->type) || $this->xml) return;
 
     // quicksearch
     switch($this->type)
@@ -240,7 +244,7 @@ class Base
         $ignorelisten = $Core->is_ignoring(session('id'),$idnum) ? "listen" : "ignore";
         print "<ul class=\"nav bottom clear\">\n";
         if(session('id') != $idnum) print "  <li><a href=\"/message/create/".id()."/\">send message</a></li>\n";
-        if(!$Security->is_admin($idnum) && session('id') != $idnum && IGNORE_ENABLED)
+        if(!$Security->is_admin($idnum) && session('id') != $idnum && IGNORE_ENABLED && $Core->can_ignore(session('id')))
         {
           print "  <li><a href=\"/member/$ignorelisten/".id()."/".MD5(session_id())."/\">$ignorelisten</a></li>\n";
         }
@@ -250,6 +254,15 @@ class Base
         print "  <li><a href=\"/thread/listfavoritesbymember/".id()."/\">favorites</a></li>\n";
         print "  <li><a href=\"/member/editcolors/".id()."/\">color scheme</a></li>\n";
         if(session('id') == $idnum) print "  <li><a href=\"/member/edit/\">edit account</a></li>\n";
+        if(session('admin'))
+        {
+          $banunban = $Core->is_banned($idnum) ? "unban" : "ban";
+          if(!$Security->is_admin($idnum))
+          {
+            print "  <li><a href=\"/admin/resetlink/$idnum/".md5(session_id())."/\" onclick=\"return confirm('Are you sure?')\">reset password link</a></li>\n";
+            print "  <li><a href=\"/admin/togglebanned/$idnum/".md5(session_id())."/\">$banunban</a></li>\n";
+          }
+        }
         print "</ul>\n";
         print "<div class=\"clear\"></div>\n";
         break;
@@ -260,6 +273,7 @@ class Base
   function footer($loadmenu=true)
   {
     if($this->ajax) return;
+    if($this->xml) return;
     print "</div>\n";
     if($loadmenu) $this->footer_menu();
     switch($this->type)

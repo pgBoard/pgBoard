@@ -22,7 +22,7 @@ class BoardCore
       if(function_exists(command())) eval(command()."();");
       if(file_exists("module/{$include}/.content/".func().".php"))
       {
-        if(!get('ajax')) require_once("module/{$include}/.content/".func().".php");
+        if(!get('ajax') && !get('xml')) require_once("module/{$include}/.content/".func().".php");
       }
     }
     else
@@ -89,7 +89,29 @@ class BoardCore
     
     return $DB->check("SELECT true FROM member_ignore WHERE member_id=$1 AND ignore_member_id=$2",array($member_id,$ignored));
   }
+
+  function is_banned($member_id)
+  {
+    global $DB;
+    return $DB->check("SELECT true FROM member WHERE id=$1 AND banned=true",array($member_id));
+  }
+
+  function can_ignore($member_id)
+  {
+    global $DB;
+    if(!IGNORE_BUFFER) return true;
+    $DB->query("SELECT
+                  extract(epoch FROM (date_first_post+interval '".IGNORE_BUFFER."'))
+                FROM
+                  member
+                WHERE
+                  id=$1",array($member_id));
+    if(!$time = $DB->load_result()) return fales;
+    else
+    return $time<time();
+  }
   
+
   function list_ignored($member_id)
   {
     global $DB;
@@ -168,7 +190,15 @@ class BoardCore
     else
     return $DB->check("SELECT true FROM favorite WHERE thread_id=$1 AND member_id=$2",array($thread_id,session('id')));
   }
-  
+
+  function check_dotted($thread_id)
+  {
+    global $DB;
+    if(!session('id')) return false;
+    $dot = $DB->value("SELECT date_posted IS NOT null AND undot IS false FROM thread_member WHERE thread_id=$1 AND member_id=$2",array($thread_id,session('id')));
+    return $dot=="t"?true:false;
+  }
+
   function thread_count()
   {
     global $DB;
