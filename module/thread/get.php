@@ -4,6 +4,9 @@ function main_get() { list_get(); }
 function list_get()
 {
   global $DB,$Core,$_title_;
+
+  // Container for XML data
+  $xmldata = '';
   
   $Query = new BoardQuery;
   $List = new BoardList;
@@ -16,20 +19,41 @@ function list_get()
     $goal = $Core->fundraiser_goal();
     $total = $Core->fundraiser_total();
     $remaining = number_format(str_replace(array("$",","),"",$goal)-str_replace(array("$",","),"",$total),2);
-    $_title_ .=  " <span class=\"smaller\">&raquo; $$remaining left to raise!</span>";
+    $days = round((strtotime("2011-02-01")-time())/86400)+round((substr($total,1)/6.53));
+//    $_title_ .=  " <span class=\"smaller\">&raquo; $$remaining left to raise ($days days until bco shuts down)</span>";
+    $_title_ .=  " <span class=\"smaller\">&raquo; $$remaining left to raise</span>";
   }
   $List->title($_title_);
   $List->header();
 
+
+
   // stickies
   $DB->query($Query->list_thread(true,false,false));
   $List->data($DB->load_all());
-  $List->thread(true);
+  if (get('xml')) {
+    $xmldata .= $List->thread_xml(true);
+  } else {
+    $List->thread(true);
+  }
   
   // the rest
   $DB->query($Query->list_thread(false,cmd(2,true),cmd(3,true)));
   $List->data($DB->load_all());
-  $List->thread();
+  if (get('xml')) {
+    $xmldata .= $List->thread_xml();
+  } else {
+    $List->thread();
+  }
+
+  // Build XML output
+  if (get('xml')) {
+    header("Content-type: text/xml");
+    print "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
+    print "<threads>\n";
+    print $xmldata;
+    print "</threads>";
+  }
 
   $List->footer();
 }
@@ -37,7 +61,9 @@ function list_get()
 function view_get()
 {
   global $DB,$Core;
-  
+
+  $xmldata = '';
+ 
   if(!id(true)) return to_index();
 
   $Query = new BoardQuery;
@@ -45,16 +71,31 @@ function view_get()
   $View->type(VIEW_THREAD);
   $View->increment_views();
 
-  $subtitle = "";
+  $subtitle="";
+
+  // set flags for media link
+  $flags="";
+  if(!get('media')) $flags .= "&media=true";
+  if(get('uncollapse')) $flags .= "&uncollapse=true";
   if(session('hidemedia'))
   {
-    if(get('media')) $subtitle .= "<a href=\"".url()."\">hide images</a>";
-    if(!get('media')) $subtitle .= "<a href=\"".url()."&media=true\">show images</a>";
+    if(get('media')) $subtitle .= "<a href=\"".url()."$flags\">hide images</a>";
+    if(!get('media')) $subtitle .= "<a href=\"".url()."$flags\">show images</a>";
   }
   if(!session('hidemedia'))
   {
-    if(!get('media')) $subtitle .= "<a href=\"".url()."&media=true\">hide images</a>";
-    if(get('media')) $subtitle .= "<a href=\"".url()."\">show images</a>";
+    if(!get('media')) $subtitle .= "<a href=\"".url()."$flags\">hide images</a>";
+    if(get('media'))  $subtitle .= "<a href=\"".url()."$flags\">show images</a>";
+  }
+
+  // set flags for collase link
+  $flags="";
+  if(!get('uncollapse')) $flags .= "&uncollapse=true";
+  if(get('media')) $flags .= "&media=true";
+  if(!session('nocollapse'))
+  {
+    if(!get('uncollapse')) $subtitle .= SPACE.ARROW_RIGHT.SPACE."<a href=\"".url()."$flags\">uncollapse</a>";
+    if(get('uncollapse')) $subtitle .= SPACE.ARROW_RIGHT.SPACE."<a href=\"".url()."$flags\">collapse</a>";
   }
 
   if(session('id'))
@@ -62,15 +103,18 @@ function view_get()
     if(!$Core->check_favorite(id())) $subtitle .= SPACE.ARROW_RIGHT.SPACE."<a href=\"javascript:;\" onclick=\"toggle_favorite(".id().");\"><span id=\"fcmd\">add</span> favorite</a>\n";
     else
     $subtitle .= SPACE.ARROW_RIGHT.SPACE."<a href=\"javascript:;\" onclick=\"toggle_favorite(".id().");\"><span id=\"fcmd\">remove</span> favorite</a>\n";
+
+    // undot
+    if($Core->check_dotted(id())) $subtitle .= SPACE.ARROW_RIGHT.SPACE."<a href=\"javascript:;\" onclick=\"undot(".id().");\" id=\"undot\">undot</a>\n";
   }
 
   if(session('admin'))
   {
     $Admin = new BoardAdmin;
-    $sticky = $Admin->check_flag("sticky",id());
-    $locked = $Admin->check_flag("locked",id());
-    $subtitle .= SPACE.ARROW_RIGHT.SPACE."<a href=\"/admin/togglesticky/".id()."\">".($sticky ? "unsticky" :"sticky")."</a>";
-    $subtitle .= SPACE.ARROW_RIGHT.SPACE."<a href=\"/admin/togglelocked/".id()."\">".($locked ? "unlock" :"lock")."</a>";
+    $sticky = $Admin->check_flag("thread","sticky",id());
+    $locked = $Admin->check_flag("thread","locked",id());
+    $subtitle .= SPACE.ARROW_RIGHT.SPACE."<a href=\"/admin/togglesticky/".id()."/".md5(session_id())."/\">".($sticky ? "unsticky" :"sticky")."</a>";
+    $subtitle .= SPACE.ARROW_RIGHT.SPACE."<a href=\"/admin/togglelocked/".id()."/".md5(session_id())."/\">".($locked ? "unlock" :"lock")."</a>";
   }
   $View->title($View->subject(id()));
   $View->subtitle($subtitle);
@@ -79,7 +123,20 @@ function view_get()
 
   $DB->query($Query->view_thread(id(true),cmd(3,true),cmd(4,true)));
   $View->data($DB->load_all());
-  $View->thread();
+  if(get('xml'))
+  {
+    header("Content-type: text/xml");
+    print "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
+    print "<posts>\n";
+    $View->thread_xml();
+    print "</posts>";
+  }
+  else
+  {
+    if(get('uncollapse') && !session('nocollapse')) $_SESSION['nocollapse']=true;
+    $View->thread();
+    if(get('uncollapse')) unset($_SESSION['nocollapse']);
+  }
 
   $View->footer();
   $View->member_update();
@@ -260,6 +317,19 @@ function togglefavorite_get()
     exit_clean();
   }
   
+}
+
+function undot_get()
+{
+  global $DB,$Core;
+  if(!session('id'))
+  {
+    print "undot failed.";
+    exit_clean();
+  }
+  $DB->query("UPDATE thread_member SET undot=true WHERE thread_id=$1 AND member_id=$2",array(id(),session('id')));
+  print "undotted";
+  exit_clean();
 }
 
 ?>

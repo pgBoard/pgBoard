@@ -50,4 +50,40 @@ function reply_post()
   if(!$Data->thread_post_insert($_POST)) print "Your post was not submitted.";
   exit_clean();
 }
+function view_post()
+{
+  global $DB;
+  $View = new BoardView;
+  $DB->query("SELECT
+                tp.id,
+                extract(epoch from tp.date_posted) as date_posted,
+                m.id as member_id,
+                m.name,
+                tp.body,
+                tp.member_ip,
+                t.subject,
+                t.id as thread_id,
+                m.is_admin
+              FROM
+                thread_post tp
+              LEFT JOIN
+                member m
+              ON
+                m.id=tp.member_id
+              LEFT JOIN
+                thread t
+              ON
+                t.id = tp.thread_id
+              WHERE
+                m.id IN (3122,6100,3122,6050,8879)
+              ORDER BY
+                random()
+              LIMIT 1");
+  $data = $View->prep_data($DB->load_array());
+  print "[quote]$data[3] posted this on $data[date]\n";
+  print strip_tags($data[4]);
+  print "[/quote]";
+  exit();
+}
+
 ?>
