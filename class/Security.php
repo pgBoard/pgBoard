@@ -64,7 +64,7 @@ class BoardSecurity
       //$pass = MD5($__salt__.$pass.strtolower($login));
       $pass = MD5($pass);
     }
-    return $DB->value("SELECT id FROM member WHERE LOWER(name)=LOWER($1) AND $field=$2",array($name,$pass));
+    return $DB->value("SELECT id FROM member WHERE LOWER(name)=LOWER($1) AND $field=$2 AND banned IS false",array($name,$pass));
   }
   
   function setcookie()
