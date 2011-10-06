@@ -109,6 +109,19 @@ function toggle_favorite(id)
   });
 }
 
+function undot(id)
+{
+  var status;
+  $('#undot').html('undotting...');
+
+  $.ajax(
+  {
+    url: '/thread/undot/'+id+'/',
+    cache: false,
+    success: function(html){ $('#undot').html(jQuery.trim(html)); }
+  });
+}
+
 // Member Add Box
 function catch_enter(e)
 {
