@@ -54,9 +54,9 @@ function status_get()
   print $output;
   print substr($name_output,0,-2);
 
-
   if(IGNORE_ENABLED && IGNORE_PUBLIC)
   {
+    $limit = 25;
     $DB->query("SELECT
                   count(*) as num,
                   m.name
@@ -69,8 +69,8 @@ function status_get()
                 GROUP BY
                   m.name
                 ORDER BY num DESC
-                LIMIT 25");
-    print "<br/><br/><strong>top 25 ignored posters:</strong><br/><br/>";
+                LIMIT $limit");
+    print "<br/><br/><strong>top $limit ignored posters:</strong><br/><br/>";
     print "<ol style=\"padding-left:30px\">\n";
     while($row = $DB->load_array()) print "  <li>".$Core->member_link($row['name'])." ($row[num])</li>\n";
     print "</ol>\n";
@@ -109,7 +109,20 @@ function status_get()
   print "<ol style=\"padding-left:30px\">\n";
   while($row = $DB->load_array()) print "  <li><a href=\"/thread/view/$row[id]/\">".strip_tags($row['subject'])."</a> ($row[num])</li>\n";
   print "</ol>\n";
-  
+
+  $DB->query("SELECT
+                m.name
+              FROM
+                member m
+              WHERE
+                banned IS true
+              ORDER BY
+                m.name");
+  print "<br/><br/><strong>banished members:</strong><br/><br/>";
+  print "<ol style=\"padding-left:30px\">\n";
+  while($row = $DB->load_array()) print "  <li>".$Core->member_link($row['name'])."</li>\n";
+  print "</ol>\n";
+
   print "</div>";
   $Base->footer();
 }
