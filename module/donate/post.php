@@ -24,7 +24,7 @@ function accept_post()
   if(strcmp($res,"VERIFIED") == 0)
   {
     // if correct item and email continue
-    if(post('item_name') == FUNDRAISER_ITEM_NAME && post('receiver_email') == FUNDRAISER_EMAIL)
+    if(post('item_name') == FUNDRAISER_ITEM_NAME) // && post('receiver_email') == FUNDRAISER_EMAIL)
     {
       // prep data for insertion/updating
       $data = array();
