@@ -38,12 +38,21 @@ class BoardParse
   {
     $host = parse_url($href[1]);
     $host = isset($host['host']) ? $host['host'] : "";
-    if($host != "youtube.com" && $host != "www.youtube.com") return $href[1];
-    else
-    {
-      $href = str_replace("watch?v=","v/",$href[1]);
+    
+    // Parse regular and shortened youtube URLs into the  youtube.com/v/#######  style so they work in browser and mobile
+    if($host == "youtube.com" || $host == "www.youtube.com" || $host == "youtu.be") {
+      if($host == "youtu.be")
+      {
+        $href = str_replace("youtu.be/","youtube.com/v/",$href[1]);
+      }
+      else 
+      {
+        $href = str_replace("watch?v=","v/",$href[1]);
+      }
       return "<object width=\"425\" height=\"355\"><param name=\"movie\" value=\"$href\"></param><param name=\"wmode\" value=\"transparent\"></param><embed src=\"$href\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"425\" height=\"355\"></embed></object>";
     }
+
+    return $href[1];
   }
 
   function run($string)
