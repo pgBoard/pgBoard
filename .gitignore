@@ -1,0 +1,5 @@
+# Ignore config/user customized setup files since example versions are checked in
+config.php
+lang/en.php
+lang/en_footer.php
+lang/en_header.php
