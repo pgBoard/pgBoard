@@ -153,6 +153,7 @@ http://www.google.com/ <-- automatic link
 [sub]subscript[/sub]
 [sup]superscript[/sup]
 [youtube]http://www.youtube.com/watch?v=WAwLYJYsa0A[/youtube]
+[vimeo]http://vimeo.com/2467457[/vimeo]
 [quote]quote[/quote]
 </pre>
 <div class='clear'></div>

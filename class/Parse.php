@@ -55,6 +55,23 @@ class BoardParse
     return $href[1];
   }
 
+  function vimeo($href)
+  {
+    $host = parse_url($href[1]);
+    $host = isset($host['host']) ? $host['host'] : "";
+
+    // Convert Vimeo links http://vimeo.com/######### to player.vimeo.com/video/####### style and embed with their iframe code
+    if($host == "vimeo.com") 
+    {
+      $href = str_replace("vimeo.com","player.vimeo.com/video", $href[1]);
+      $href.="?title=0&amp;byline=0&amp;portrait=0";
+
+      return "<iframe src=\"$href\" width=\"425\" height=\"239\" frameborder=\"0\" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>";
+    }
+
+    return $href[1];
+  }
+
   function run($string)
   {
     if(!$s = $string) return "";
@@ -80,11 +97,13 @@ class BoardParse
     {
       $s = preg_replace("#\[img\](.*)\[\/img\]#Ui","<a href=\"$1\" class=\"link\" onclick=\"$(this).after('<img src=\\''+this.href+'\\' ondblclick=\\'window.open(this.src);return false\\'/>');$(this).remove();return false;\">IMAGE REMOVED CLICK TO VIEW</a>",$s);
       $s = preg_replace("#\[youtube\](.*)\[\/youtube\]#Ui","<a href=\"$1\" onclick=\"window.open(this.href); return false;\">YOUTUBE REMOVED CLICK TO VIEW</a>",$s);
+      $s = preg_replace("#\[vimeo\](.*)\[\/vimeo\]#Ui","<a href=\"$1\" onclick=\"window.open(this.href); return false;\">VIMEO REMOVED CLICK TO VIEW</a>",$s);
     }
     else
     {
       $s = preg_replace("#\[img\](.*)\[\/img\]#Ui","<img src=\"$1\" ondblclick=\"window.open(this.src);\"/>",$s);
       $s = preg_replace_callback("#\[youtube\](.*)\[\/youtube\]#Ui",array(&$this,'youtube'),$s);
+      $s = preg_replace_callback("#\[vimeo\](.*)\[\/vimeo\]#Ui",array(&$this,'vimeo'),$s);
     }
 
     // start line break stuff
