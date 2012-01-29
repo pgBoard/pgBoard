@@ -1,3 +1,5 @@
+# a lightweight php+postgresql messageboard
+
 Requirements:
 Apache /w mod_rewrite enabled
 PHP 5x
