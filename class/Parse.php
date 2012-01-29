@@ -38,12 +38,38 @@ class BoardParse
   {
     $host = parse_url($href[1]);
     $host = isset($host['host']) ? $host['host'] : "";
-    if($host != "youtube.com" && $host != "www.youtube.com") return $href[1];
-    else
-    {
-      $href = str_replace("watch?v=","v/",$href[1]);
+    
+    // Parse regular and shortened youtube URLs into the  youtube.com/v/#######  style so they work in browser and mobile
+    if($host == "youtube.com" || $host == "www.youtube.com" || $host == "youtu.be") {
+      if($host == "youtu.be")
+      {
+        $href = str_replace("youtu.be/","youtube.com/v/",$href[1]);
+      }
+      else 
+      {
+        $href = str_replace("watch?v=","v/",$href[1]);
+      }
       return "<object width=\"425\" height=\"355\"><param name=\"movie\" value=\"$href\"></param><param name=\"wmode\" value=\"transparent\"></param><embed src=\"$href\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"425\" height=\"355\"></embed></object>";
     }
+
+    return $href[1];
+  }
+
+  function vimeo($href)
+  {
+    $host = parse_url($href[1]);
+    $host = isset($host['host']) ? $host['host'] : "";
+
+    // Convert Vimeo links http://vimeo.com/######### to player.vimeo.com/video/####### style and embed with their iframe code
+    if($host == "vimeo.com") 
+    {
+      $href = str_replace("vimeo.com","player.vimeo.com/video", $href[1]);
+      $href.="?title=0&amp;byline=0&amp;portrait=0";
+
+      return "<iframe src=\"$href\" width=\"425\" height=\"239\" frameborder=\"0\" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>";
+    }
+
+    return $href[1];
   }
 
   function run($string)
@@ -71,11 +97,13 @@ class BoardParse
     {
       $s = preg_replace("#\[img\](.*)\[\/img\]#Ui","<a href=\"$1\" class=\"link\" onclick=\"$(this).after('<img src=\\''+this.href+'\\' ondblclick=\\'window.open(this.src);return false\\'/>');$(this).remove();return false;\">IMAGE REMOVED CLICK TO VIEW</a>",$s);
       $s = preg_replace("#\[youtube\](.*)\[\/youtube\]#Ui","<a href=\"$1\" onclick=\"window.open(this.href); return false;\">YOUTUBE REMOVED CLICK TO VIEW</a>",$s);
+      $s = preg_replace("#\[vimeo\](.*)\[\/vimeo\]#Ui","<a href=\"$1\" onclick=\"window.open(this.href); return false;\">VIMEO REMOVED CLICK TO VIEW</a>",$s);
     }
     else
     {
       $s = preg_replace("#\[img\](.*)\[\/img\]#Ui","<img src=\"$1\" ondblclick=\"window.open(this.src);\"/>",$s);
       $s = preg_replace_callback("#\[youtube\](.*)\[\/youtube\]#Ui",array(&$this,'youtube'),$s);
+      $s = preg_replace_callback("#\[vimeo\](.*)\[\/vimeo\]#Ui",array(&$this,'vimeo'),$s);
     }
 
     // start line break stuff
