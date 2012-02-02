@@ -49,6 +49,8 @@ class BoardParse
       {
         $href = str_replace("watch?v=","v/",$href[1]);
       }
+      // disable autoplay
+      $href = str_replace("autoplay=","no=",$href);
       return "<object width=\"425\" height=\"355\"><param name=\"movie\" value=\"$href\"></param><param name=\"wmode\" value=\"transparent\"></param><embed src=\"$href\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"425\" height=\"355\"></embed></object>";
     }
 
