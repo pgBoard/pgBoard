@@ -93,15 +93,16 @@ class Form
     return $this->build_element($curr);
   }
   
-  function add_select($name,$title,$initial,$data=false,$extra=">")
+  function add_select($name,$title,$initial,$data=false,$selected_val=NULL,$extra=">")
   {
     $curr = new stdClass();
-    $curr->type    = FORM_SELECT;
-    $curr->name    = $name;
-    $curr->title   = $title;
-    $curr->initial = $initial;
-    $curr->data    = $data;
-    $curr->extra = $extra;
+    $curr->type         = FORM_SELECT;
+    $curr->name         = $name;
+    $curr->title        = $title;
+    $curr->initial      = $initial;
+    $curr->data         = $data;
+    $curr->selected_val = $selected_val;
+    $curr->extra        = $extra;
     return $this->build_element($curr);
   }
 
@@ -192,7 +193,7 @@ class Form
     foreach($ob->data as $val => $key)
     {
       $key = strip_tags($key);
-      if($val == $this->values[$ob->name]) $output .= "  <option value=\"$val\" SELECTED>$key</option>\n";
+      if($val == $this->values[$ob->name] || $val == $ob->selected_val) $output .= "  <option value=\"$val\" SELECTED>$key</option>\n";
       else
       $output .= "  <option value=\"$val\">$key</option>\n";
     }

@@ -12,7 +12,7 @@ if(isset($_SESSION['search'])) $Form->values($_SESSION['search']);
 $Form->header("/search/","post",FORM_SALT);
 $Form->fieldset_open("Search Information");
 $Form->add_text("search","Search For:",300);
-$Form->add_select("_type","Within:","Choose",array("thread"=>"Threads","thread_post"=>"Thread Posts","message"=>"Messages","message_post"=>"Message Posts"));
+$Form->add_select("_type","Within:",NULL,array("thread"=>"Threads","thread_post"=>"Thread Posts","message"=>"Messages","message_post"=>"Message Posts"),"thread");
 $Form->fieldset_close();
 $Form->fieldset_open("Optional Fields");
 print "<li>will return in a bit</li>\n";
