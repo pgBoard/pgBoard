@@ -152,6 +152,7 @@ http://www.google.com/ <-- automatic link
 [code]like pre[/code]
 [sub]subscript[/sub]
 [sup]superscript[/sup]
+[soundcloud]http://soundcloud.com/goingslowly/047-railroad-lullabye[/soundcloud]
 [youtube]http://youtube.com/watch?v=WAwLYJYsa0A[/youtube] or [youtube]http://youtu.be/L8xXb-P4wZY[/youtube]
 [vimeo]http://vimeo.com/2467457[/vimeo]
 [quote]quote[/quote]
