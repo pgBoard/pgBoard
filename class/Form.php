@@ -282,6 +282,11 @@ class Form
     print "  $('#$id').attr('notnull','$msg').addClass('validate_{$this->name}');\n";
   }
 
+  function set_focus($id)
+  {
+    print "  $('#$id').focus();";
+  }
+
   function footer_validate()
   {
     print "});\n";

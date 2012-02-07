@@ -37,6 +37,7 @@ $Form->footer();
 $Form->header_validate();
 $Form->add_notnull("search","Please enter a search term.");
 $Form->add_notnull("_type","Please choose what to search.");
+$Form->set_focus("search");
 $Form->footer_validate();
 
 if(!isset($res)) $Base->footer();
