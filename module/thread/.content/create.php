@@ -19,6 +19,7 @@ $Form->footer();
 $Form->header_validate();
 $Form->add_notnull("subject","Please enter a subject.");
 $Form->add_notnull("body","Please enter a post body.");
+$Form->set_focus("subject");
 $Form->footer_validate();
 
 $Base->footer();
