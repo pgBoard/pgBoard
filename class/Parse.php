@@ -57,6 +57,32 @@ class BoardParse
     return $href[1];
   }
 
+  function soundcloud($href)
+  {
+    $host = parse_url($href[1]);
+    $host = isset($host['host']) ? $host['host'] : "";
+    
+    if($host == "soundcloud.com" || $host == "www.soundcloud.com" ) {
+
+      $height = 81;
+
+      // player embed URL accepts the encoded soundcloud page URL as the param
+      $href_encoded = rawurlencode($href[1]);
+      $embed_src = "http://player.soundcloud.com/player.swf?url=$href_encoded";
+
+      $embed  = "<object height=\"$height\" width=\"100%\">";
+      $embed .= "<param name=\"wmode\" value=\"opaque\">";
+      $embed .= "<param name=\"movie\" value=\"$embed_src\">";
+      $embed .= "<param name=\"allowscriptaccess\" value=\"always\">";
+      $embed .= "<embed allowscriptaccess=\"always\" height=\"$height\" src=\"$embed_src\" type=\"application/x-shockwave-flash\" width=\"100%\">";
+      $embed .= "</object>";
+
+      return $embed;
+    }
+
+    return $href[1];
+  }
+
   function vimeo($href)
   {
     $host = parse_url($href[1]);
@@ -100,12 +126,14 @@ class BoardParse
       $s = preg_replace("#\[img\](.*)\[\/img\]#Ui","<a href=\"$1\" class=\"link\" onclick=\"$(this).after('<img src=\\''+this.href+'\\' ondblclick=\\'window.open(this.src);return false\\'/>');$(this).remove();return false;\">IMAGE REMOVED CLICK TO VIEW</a>",$s);
       $s = preg_replace("#\[youtube\](.*)\[\/youtube\]#Ui","<a href=\"$1\" onclick=\"window.open(this.href); return false;\">YOUTUBE REMOVED CLICK TO VIEW</a>",$s);
       $s = preg_replace("#\[vimeo\](.*)\[\/vimeo\]#Ui","<a href=\"$1\" onclick=\"window.open(this.href); return false;\">VIMEO REMOVED CLICK TO VIEW</a>",$s);
+      $s = preg_replace("#\[soundcloud\](.*)\[\/soundcloud\]#Ui","<a href=\"$1\" onclick=\"window.open(this.href); return false;\">SOUNDCLOUD REMOVED CLICK TO VIEW</a>",$s);
     }
     else
     {
       $s = preg_replace("#\[img\](.*)\[\/img\]#Ui","<img src=\"$1\" ondblclick=\"window.open(this.src);\"/>",$s);
       $s = preg_replace_callback("#\[youtube\](.*)\[\/youtube\]#Ui",array(&$this,'youtube'),$s);
       $s = preg_replace_callback("#\[vimeo\](.*)\[\/vimeo\]#Ui",array(&$this,'vimeo'),$s);
+      $s = preg_replace_callback("#\[soundcloud\](.*)\[\/soundcloud\]#Ui",array(&$this,'soundcloud'),$s);
     }
 
     // start line break stuff
