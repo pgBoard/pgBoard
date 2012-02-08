@@ -36,6 +36,7 @@ $Form->header_validate();
 $Form->add_notnull("message_members","Please enter at least one recipient.");
 $Form->add_notnull("subject","Please enter a subject.");
 $Form->add_notnull("body","Please enter a post body.");
+$Form->set_focus("_recipients");
 $Form->footer_validate();
 
 $Base->footer();

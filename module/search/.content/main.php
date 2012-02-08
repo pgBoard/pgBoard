@@ -12,7 +12,8 @@ if(isset($_SESSION['search'])) $Form->values($_SESSION['search']);
 $Form->header("/search/","post",FORM_SALT);
 $Form->fieldset_open("Search Information");
 $Form->add_text("search","Search For:",300);
-$Form->add_select("_type","Within:","Choose",array("thread"=>"Threads","thread_post"=>"Thread Posts","message"=>"Messages","message_post"=>"Message Posts"));
+$Form->values(array("_type"=>"thread"));
+$Form->add_select("_type","Within:",NULL,array("thread"=>"Threads","thread_post"=>"Thread Posts","message"=>"Messages","message_post"=>"Message Posts"));
 $Form->fieldset_close();
 $Form->fieldset_open("Optional Fields");
 print "<li>will return in a bit</li>\n";
@@ -36,6 +37,7 @@ $Form->footer();
 $Form->header_validate();
 $Form->add_notnull("search","Please enter a search term.");
 $Form->add_notnull("_type","Please choose what to search.");
+$Form->set_focus("search");
 $Form->footer_validate();
 
 if(!isset($res)) $Base->footer();
