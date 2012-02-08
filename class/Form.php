@@ -101,7 +101,7 @@ class Form
     $curr->title   = $title;
     $curr->initial = $initial;
     $curr->data    = $data;
-    $curr->extra = $extra;
+    $curr->extra   = $extra;
     return $this->build_element($curr);
   }
 
@@ -192,7 +192,7 @@ class Form
     foreach($ob->data as $val => $key)
     {
       $key = strip_tags($key);
-      if($val == $this->values[$ob->name]) $output .= "  <option value=\"$val\" SELECTED>$key</option>\n";
+      if($val == $this->values[$ob->name]) $output .= "  <option value=\"$val\" selected=\"selected\">$key</option>\n";
       else
       $output .= "  <option value=\"$val\">$key</option>\n";
     }
