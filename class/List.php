@@ -91,9 +91,9 @@ class BoardList extends Base
     {
       $field = $this->prep_data($row);
       $class = ($class==CSS_ODD?CSS_EVEN:CSS_ODD);
+      if($field['fav'] != "") $class .= " favorite";
       $firstpost = "<a href=\"javascript:;\" onclick=\"firstpost('{$this->table}',{$field[LIST_ID]},this);return false;\">".ARROW_RIGHT."</a>&nbsp;";
       if(session('nofirstpost')) $firstpost = "";
-
       print "<div class=\"{$class}$field[me]\" id=\"{$this->table}_{$field[LIST_ID]}\">\n";
       print "<ul class=\"list$field[read]\" ondblclick=\"location.href='/{$this->table}/view/{$field[LIST_ID]}/&r={$field[LIST_POSTS]}'\">\n";
       print "  <li class=\"readbar\">&nbsp;</li>\n";
