@@ -19,7 +19,7 @@ class Search
   function message_insert($data,$id) { return true; }
   function message_post_insert($data,$id) { return true; }
   function thread_update($data) { return true; }
-  function thread_post_update($id) { return true; }
+  function thread_post_update($data,$id) { return true; }
   function message_update($data) { return true; }
   function message_post_update($data) { return true; }
   function thread_delete($id) { return true; }
