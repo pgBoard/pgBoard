@@ -14,7 +14,7 @@ function thread_get()
   $List = new BoardList;
   $List->type(LIST_THREAD_SEARCH);
   
-  $List->title("Search Threads: ".htmlentities($query));
+  $List->title("Search Threads: ".htmlentities(cmd(2)));
   $List->subtitle(number_format($res['total'])." results found showing ".($offset?$offset:1)."-".($offset+100).SPACE.ARROW_RIGHT.SPACE."page: $page");
   $List->header(false);
   require_once(DIR."module/search/.content/main.php");
