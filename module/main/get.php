@@ -29,7 +29,8 @@ function status_get()
   $posting = array_keys($Core->posting_members());
   $lurking = array_keys($Core->lurking_members());
   $chatting = $Core->chatting_members();
-  $active = array_merge($active, $chatting);
+  $active += $chatting;
+  asort($active);
   $chatting = array_keys($chatting);
 
   $Base = new Base;
