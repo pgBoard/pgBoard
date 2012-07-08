@@ -100,7 +100,7 @@ class Data
     if($DB->update("thread_post","id",$id,$data))
     {
       $Search = new Search;
-      if($Search->thread_post_update($id))
+      if($Search->thread_post_update($data,$id))
       {
         $DB->commit();
         return true;
