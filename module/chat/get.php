@@ -4,13 +4,13 @@ function history_get()
   global $DB,$Parse,$Core;
   $last = MD5($DB->value("SELECT extract(epoch from stamp) FROM chat ORDER BY stamp DESC LIMIT 1"));
 
+  if(session('id')) $DB->query("UPDATE member SET last_chat=now() WHERE id=$1",array(session('id')));
+
   if($last == id())
   {
     print $last;
     exit_clean();
   }
-
-  if(session('id')) $DB->query("UPDATE member SET last_chat=now() WHERE id=$1",array(session('id')));
 
   $DB->query("SELECT
                 extract(epoch from c.stamp) as stamp,
