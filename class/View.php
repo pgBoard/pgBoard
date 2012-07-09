@@ -73,11 +73,22 @@ class BoardView extends Base
     }
     if(!$this->data) $this->data = array();
 
+    if (session('id'))
+    {
+      $soft_ignore = $Core->member_pref(session('id'),"ignore") == 'true';
+      $ignore_list = $Core->list_ignored(session('id'));
+      if (!$ignore_list) $ignore_list = array();
+    }
+    else
+    {
+      $soft_ignore = false;
+      $ignore_list = array();
+    }
+
     if(session('id') && ($this->type == VIEW_THREAD || $this->type == VIEW_MESSAGE) && !$this->ajax)
     {
-      if($list = array_keys($Core->list_ignored(session('id')))) $list = implode(",",$list);
-      else
-      $list = "0";
+      if(sizeof($ignore_list) == 0) $list = "0";
+      else $list = implode(",",array_keys($ignore_list));
       
       // minimum number of posts before collapse
       $mincollapse = is_numeric(session('mincollapse')) ? session('mincollapse') : COLLAPSE_DEFAULT;
@@ -123,17 +134,20 @@ class BoardView extends Base
     foreach($this->data as $row)
     {
       $field = $this->prep_data($row);
+      $ignoring = $soft_ignore ? array_key_exists($field[VIEW_CREATOR_ID], $ignore_list) : false;
+      $show = $ignoring ? NON_BREAKING_SPACE.ARROW_RIGHT." <a href=\"javascript:;\" onclick=\"softignore({$field[VIEW_ID]},this)\">show</a>" : '';
+      $hide = $ignoring ? " style=\"display: none\" id=\"si_${field[VIEW_ID]}\"" : '';
       $count = "#{$i}";
       if(session('nopostnumber')) $count = "";
       print "<div id=\"view_".id()."_{$field[VIEW_ID]}_{$i}\" class=\"post\">\n";
       print "<ul class=\"view\" id=\"post_{$field[VIEW_ID]}\">\n";
       print "  <li class=\"info even$field[me]\">\n";
       print "    <div class=\"postinfo\">".$Core->member_link($field[VIEW_CREATOR_NAME])." posted this on $field[date]</div>\n";
-      print "    <div class=\"controls\">$field[quote]$field[admin]</div>\n";
+      print "    <div class=\"controls\">$field[quote]$field[admin]$show</div>\n";
       print "    <div class=\"count\"><a href=\"#{$i}\" name=\"$i\">{$count}</a></div>\n";
       print "    <div class=\"clear\"></div>\n";
       print "  </li>\n";
-      print "  <li class=\"postbody odd\">\n";
+      print "  <li class=\"postbody odd\"$hide>\n";
       print $field['body'];
       print "  </li>\n";
       print "</ul>\n";
