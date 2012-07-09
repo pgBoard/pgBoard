@@ -3,6 +3,7 @@ function history_get()
 {
   global $DB,$Parse,$Core;
   $last = MD5($DB->value("SELECT extract(epoch from stamp) FROM chat ORDER BY stamp DESC LIMIT 1"));
+  // Technically, we should add the ignore WHERE clause on to the above, but...
 
   if($last == id())
   {
@@ -11,6 +12,9 @@ function history_get()
   }
 
   if(session('id')) $DB->query("UPDATE member SET last_chat=now() WHERE id=$1",array(session('id')));
+
+  if($list = array_keys($Core->list_ignored(session('id')))) $list = implode(",",$list);
+  else $list = "0";
 
   $DB->query("SELECT
                 extract(epoch from c.stamp) as stamp,
@@ -23,8 +27,18 @@ function history_get()
                 member m
               ON
                 m.id=c.member_id
+              WHERE
+                c.member_id NOT IN ($list)
               ORDER BY c.stamp DESC LIMIT 100");
-  $chats = array_reverse($DB->load_all());
+
+  $chats = $DB->load_all();
+  if ($chats === FALSE)
+  {
+    print $last;
+    exit_clean();
+    return;
+  }
+  $chats = array_reverse($chats);
 
   $output = $last;
   foreach($chats as $chat)
