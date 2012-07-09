@@ -12,25 +12,31 @@ $Form = new Form;
 $Form->labels(false);
 $Form->header("/chat/speak/","post",FORM_SALT);
 $Form->fieldset_open("Chat Panel");
-$Form->add_text("chat",false,400,false,"onkeydown=\"return catch_enter(event)\"/>");
+$Form->add_text("chat",false,400,false,"autocomplete=\"off\" onkeydown=\"return catch_enter(event)\"/>");
 $Form->add_button("add","say that shit","speak();");
 print "<br/>\n";
 $Form->add_checkbox("stop","pause scroll","onclick=\"pause=pause?false:true\"/> pause scrolling");
+//$Form->add_checkbox("disablemedia","disable media",(session('hidemedia')?' checked="yes" ':'') . "onclick=\"media=!media;lasthash='';update(false);\"/> disable media");
+$Form->add_checkbox("enablemedia","enable media","onclick=\"media=!media;lasthash='';update(false);\"/> enable media");
 $Form->fieldset_close();
 $Form->footer();
+$Form->header_validate();
+$Form->set_focus('chat');
+$Form->footer_validate();
 $Base->footer();
 ?>
 <script type="text/javascript">
-var lasthash;
+var lasthash = '';
 var pause = false;
+var media = <?php print /*session('hidemedia') ? */ 'false' /*: 'true' */ ;?>;
 function speak()
 {
   var text = $('#chat').val();
+  $('#chat').val('');
   $('#add')[0].disabled = true;
   $.post("/chat/speak/",{msg:text},function(data)
   {
     $('#add')[0].disabled = false;
-    $('#chat').val('');
     e('data').scrollTop = e('data').scrollHeight;
     update(false);
   });
@@ -39,7 +45,7 @@ function speak()
 function update(auto)
 {
   if(pause && auto) return;
-  $.get("/chat/history/"+lasthash,{},function(data)
+  $.get("/chat/history/"+lasthash+"/&media="+(media?'enabled':'disabled'),{},function(data)
   {
     data = jQuery.trim(data);
     if(data != lasthash)
