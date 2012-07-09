@@ -11,8 +11,9 @@ class BoardParse
     $this->bbc = $bbc;
     $this->rep = $rep;
     $this->hidemedia = session('hidemedia');
-    if(get('media') && session('hidemedia')) $this->hidemedia=false;
-    if(get('media') && !session('hidemedia')) $this->hidemedia=true;
+    if(get('media')=='enabled') $this->hidemedia=false;
+    else if(get('media')=='disabled') $this->hidemedia=true;
+    else if(get('media')) $this->hidemedia = !$this->hidemedia;
   }
 
   // prepare urls (so hack)
