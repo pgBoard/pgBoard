@@ -73,7 +73,7 @@ class BoardView extends Base
     }
     if(!$this->data) $this->data = array();
 
-    if (session('id'))
+    if (session('id') && ($this->type != VIEW_MESSAGE))
     {
       $soft_ignore = $Core->member_pref(session('id'),"ignore") == 'true';
       $ignore_list = $Core->list_ignored(session('id'));
