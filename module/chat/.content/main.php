@@ -42,6 +42,17 @@ function speak()
   });
 }
 
+var combiner_stripper = /([^\u0300-\u036F\u1DC0-\u1DFF\u20D0-\u20FF\uFE20-\uFE2F][\u0300-\u036F\u1DC0-\u1DFF\u20D0-\u20FF\uFE20-\uFE2F])[\u0300-\u036F\u1DC0-\u1DFF\u20D0-\u20FF\uFE20-\uFE2F]*/g;
+function strip_combiners (s)
+{
+  // Application of many Unicode combiners render annoyingly (incorrectly?) in
+  // common browsers and OSes.  The following should limit each normal
+  // character to a single combining mark and alleviate the problem without
+  // stopping many legitimate uses of combining marks.
+  // Doing it on the client for now so that the server isn't burdened with it.
+  return s.replace(combiner_stripper, "\$1");
+}
+
 function update(auto)
 {
   if(pause && auto) return;
@@ -51,7 +62,7 @@ function update(auto)
     if(data != lasthash)
     {
       lasthash = data.substring(0,32);
-      $('#data').html(data.substring(32));
+      $('#data').html(strip_combiners(data.substring(32)));
       $('#data')[0].scrollTop = $('#data')[0].scrollHeight;
     }
   });
