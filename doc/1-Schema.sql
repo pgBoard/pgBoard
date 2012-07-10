@@ -18,6 +18,7 @@ CREATE TABLE member
   secret               char(32) NOT NULL CHECK(secret <> ''),      -- secret word for password recovery md5 hashed
   ip                   cidr NOT NULL,                              -- ip of member at last login
   date_joined          timestamp DEFAULT now(),                    -- date of signup
+  date_first_post      date,                                       -- the date of the member's first post
   email_signup         text NOT NULL CHECK(email_signup <> ''),    -- email used to sign up
   postalcode           text NOT NULL CHECK(postalcode <> ''),      -- member's postalcode
   total_threads        int DEFAULT 0,                              -- member's total threads created
