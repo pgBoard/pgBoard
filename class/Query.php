@@ -137,7 +137,7 @@ class BoardQuery
     $order = "ORDER BY tp.date_posted ASC";
     $ignore = "";
 
-    if(session('id'))
+    if(session('id') && $Core->member_pref(session('id'),"ignore") != 'true')
     if($list = array_keys($Core->list_ignored(session('id'))))
     {
       $list = implode(",",$list);

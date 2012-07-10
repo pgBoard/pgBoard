@@ -6,6 +6,15 @@ Array.prototype.remove = function(from,to)
 };
 
 
+function softignore(num,ob)
+{
+  var si = $('#si_'+num);
+  si.toggle();
+
+  if(si.css('display') != 'none') $(ob).html('hide');
+  else $(ob).html('show');
+};
+
 function firstpost(type,num,ob)
 {
   var fp = $('#fp_'+num);
