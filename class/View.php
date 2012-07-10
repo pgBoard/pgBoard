@@ -101,8 +101,7 @@ class BoardView extends Base
     }
 
     $i=1;
-    if(cmd(3,true)) $i = cmd(3,true)+1;
-
+    if(cmd(3,true)) $i = abs(cmd(3,true))+1;
     if(!$this->ajax)
     {
       $hidemedia = get('media') ? "true" : "false";
@@ -112,7 +111,9 @@ class BoardView extends Base
       {
         print "<div class=\"post clear\" id=\"uncollapse\">\n";
         print "  <ul class=\"postbody odd collapse\">\n";
-        print "    <a href=\"javascript:;\" onclick=\"uncollapse('{$this->table}',$this->collapse,$hidemedia,this);\">show read (".($this->collapse)." posts)</a>\n";
+        print "    &raquo; <a id=\"uncollapse1\" href=\"javascript:;\" onclick=\"uncollapser('{$this->table}',$hidemedia,".COLLAPSE_MORE_COUNT.");\">show more posts</a>\n";
+        print "    &raquo; <a id=\"uncollapse2\" href=\"javascript:;\" onclick=\"uncollapser('{$this->table}',$hidemedia,null);\">show all <span id=\"uncollapse_counter\">".($this->collapse)."</span> more posts</a>\n";
+        print "    <span id=\"uncollapse3\" style=\"display:none\">loading...</span>\n";
         print "  </ul>\n";
         print "</div>\n";
         $this->data(array_slice($this->data,$this->collapse));

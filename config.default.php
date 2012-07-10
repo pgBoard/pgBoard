@@ -17,6 +17,7 @@ define("IGNORE_PUBLIC",true); // set to false to make ignoring private
 define("LIST_DEFAULT_LIMIT",100); // number of threads per page
 define("COLLAPSE_DEFAULT",25); // default value to collapse at
 define("COLLAPSE_OPEN_DEFAULT",5); // default number of posts to leave open after collapse
+define("COLLAPSE_MORE_COUNT",15); // number of additional posts to show when showing "more"
 
 define("FUNDRAISER_ID",-1); // id of fundraiser record in database
 define("FUNDRAISER_ITEM_NAME","Board Hosting"); // item name for paypal ipn to recognize payment

@@ -30,24 +30,47 @@ function firstpost(type,num,ob)
   $(ob).html('&raquo;');
 };
 
-function uncollapse(type,num,media,ob)
+function uncollapser(type,media,count)
 {
-  if(ob)
+  if (e('uncollapse1'))
   {
-    if(!ob.save) ob.save = ob.innerHTML;
-    ob.innerHTML = "loading...";
+    $('#uncollapse1').hide();
+    $('#uncollapse2').hide();
+    $('#uncollapse3').show();
   }
   media = media ? "&media=true" : "";
   data = $('.post:last')[0].id.split('_');
   id = data[1];
+
+  var start = $('.post:first').next()[0].id.split('_')[3] - 1;
+  var num = count;
+  if (count !== null)
+  {
+    start -= count;
+  }
+  else
+  {
+    num = start;
+    start = 0;
+  }
+
+  if (start < 0)
+  {
+    num += start;
+    start = 0;
+  }
+  $("#uncollapse_counter").html(start);
   $.ajax(
   {
-    url: '/'+type+'/view/'+id+'/0/'+num+'/&ajax=true'+media,
+    url: '/'+type+'/view/'+id+'/-'+start+'/'+num+'/&ajax=true'+media,
     cache: false,
     success: function(html)
     {
-      $('#view_'+id).prepend(html);
-      $('#uncollapse').remove();
+      $('#uncollapse').after(html);
+      if(start<=0) $('#uncollapse').hide();
+      $('#uncollapse1').show();
+      $('#uncollapse2').show();
+      $('#uncollapse3').hide();
     }
   });
 };
