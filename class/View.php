@@ -73,8 +73,12 @@ class BoardView extends Base
     }
     if(!$this->data) $this->data = array();
 
+    $uncollapsecount = UNCOLLAPSE_COUNT_DEFAULT;
     if(session('id') && ($this->type == VIEW_THREAD || $this->type == VIEW_MESSAGE) && !$this->ajax)
     {
+      if (intval(session('uncollapsecount')) >= 1)
+        $uncollapsecount = intval(session('uncollapsecount'));
+
       if($list = array_keys($Core->list_ignored(session('id')))) $list = implode(",",$list);
       else
       $list = "0";
@@ -112,7 +116,7 @@ class BoardView extends Base
         print "<div class=\"post clear\" id=\"uncollapse\">\n";
         print "  <ul class=\"postbody odd collapse\">\n";
         print "    <span id=\"uncollapse_links\">\n";
-        print "     &raquo; <a href=\"javascript:;\" onclick=\"uncollapser('{$this->table}',$hidemedia,".COLLAPSE_MORE_COUNT.");\">show more posts</a>\n";
+        print "     &raquo; <a href=\"javascript:;\" onclick=\"uncollapser('{$this->table}',$hidemedia,$uncollapsecount);\">show more posts</a>\n";
         print "     &raquo; <a href=\"javascript:;\" onclick=\"uncollapser('{$this->table}',$hidemedia,null);\">show all <span id=\"uncollapse_counter\">".($this->collapse)."</span> more posts</a>\n";
         print "    </span>\n";
         print "    <span id=\"uncollapse_loading\" style=\"display:none\">loading...</span>\n";
