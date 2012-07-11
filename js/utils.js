@@ -32,12 +32,8 @@ function firstpost(type,num,ob)
 
 function uncollapser(type,media,count)
 {
-  if (e('uncollapse1'))
-  {
-    $('#uncollapse1').hide();
-    $('#uncollapse2').hide();
-    $('#uncollapse3').show();
-  }
+  $('#uncollapse_links').hide();
+  $('#uncollapse_loading').show();
   media = media ? "&media=true" : "";
   data = $('.post:last')[0].id.split('_');
   id = data[1];
@@ -68,9 +64,8 @@ function uncollapser(type,media,count)
     {
       $('#uncollapse').after(html);
       if(start<=0) $('#uncollapse').hide();
-      $('#uncollapse1').show();
-      $('#uncollapse2').show();
-      $('#uncollapse3').hide();
+      $('#uncollapse_loading').hide();
+      $('#uncollapse_links').show();
     }
   });
 };
