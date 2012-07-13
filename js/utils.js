@@ -55,7 +55,17 @@ function uncollapser(type,media,count)
     num += start;
     start = 0;
   }
-  $("#uncollapse_counter").html(start);
+  if (start == Math.min(start,num))
+  {
+    $("#uncollapse_all").hide();
+    $("#uncollapse_more_counter").html("all " + Math.min(start,num));
+    if (start == 1) $("#uncollapse_some").html("show final post");
+  }
+  else
+  {
+    $("#uncollapse_counter").html(start);
+    $("#uncollapse_more_counter").html(Math.min(start,num));
+  }
   $.ajax(
   {
     url: '/'+type+'/view/'+id+'/-'+start+'/'+num+'/&ajax=true'+media,

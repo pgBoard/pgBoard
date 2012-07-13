@@ -113,11 +113,12 @@ class BoardView extends Base
       print "<div id=\"view_".id()."\">\n";
       if($this->collapse && $this->type != VIEW_THREAD_PREVIEW && $this->type != VIEW_MESSAGE_PREVIEW)
       {
+        $uncollapsecount = min($this->collapse, $uncollapsecount);
         print "<div class=\"post clear\" id=\"uncollapse\">\n";
         print "  <ul class=\"postbody odd collapse\">\n";
         print "    <span id=\"uncollapse_links\">\n";
-        print "     &raquo; <a href=\"javascript:;\" onclick=\"uncollapser('{$this->table}',$hidemedia,$uncollapsecount);\">show more posts</a>\n";
-        print "     &raquo; <a href=\"javascript:;\" onclick=\"uncollapser('{$this->table}',$hidemedia,null);\">show all <span id=\"uncollapse_counter\">".($this->collapse)."</span> more posts</a>\n";
+        print "     <a id=\"uncollapse_some\" href=\"javascript:;\" onclick=\"uncollapser('{$this->table}',$hidemedia,$uncollapsecount);\">show <span id=\"uncollapse_more_counter\">$uncollapsecount</span> previous posts</a>\n";
+        print "     <span id=\"uncollapse_all\">&raquo; <a href=\"javascript:;\" onclick=\"uncollapser('{$this->table}',$hidemedia,null);\">show all <span id=\"uncollapse_counter\">".($this->collapse)."</span> previous posts</a></span>\n";
         print "    </span>\n";
         print "    <span id=\"uncollapse_loading\" style=\"display:none\">loading...</span>\n";
         print "  </ul>\n";
