@@ -98,15 +98,22 @@ class BoardCore
 
   function can_ignore($member_id)
   {
-    global $DB;
+    global $DB,$Security;
+    if($Security->is_admin($member_id)) return true;
     if(!IGNORE_BUFFER) return true;
+    if ($DB->value("SELECT date_first_post FROM member WHERE id=$1",array($member_id)) === NULL)
+    {
+      $dfp = $DB->value("SELECT date_posted::date FROM thread_post WHERE member_id=$1 ORDER BY date_posted ASC LIMIT 1", array($member_id));
+      if (!$dfp) return false; // No posts
+      $DB->update("member","id",$member_id,array("date_first_post"=>$dfp));
+    }
     $DB->query("SELECT
                   extract(epoch FROM (date_first_post+interval '".IGNORE_BUFFER."'))
                 FROM
                   member
                 WHERE
                   id=$1",array($member_id));
-    if(!$time = $DB->load_result()) return fales;
+    if(!$time = $DB->load_result()) return false;
     else
     return $time<time();
   }
