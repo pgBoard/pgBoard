@@ -65,7 +65,7 @@ class Base
     $_title_ = strip_tags($title);
     $Plugin = new BoardPlugin;
     $title = $Plugin->base_title($title);
-    $this->title = strip_tags($title);
+    $this->title = $title;
   }
   function subtitle($subtitle) { $this->subtitle = $subtitle; }
   function blocked($blocked) { $this->blocked = $blocked; }

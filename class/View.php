@@ -54,12 +54,15 @@ class BoardView extends Base
   function subject($id)
   {
     global $DB;
-    return $DB->value("SELECT
-                         subject || ' <span class=''smaller''>(' || views || ' views)</span>'
-                       FROM
-                         {$this->table}
-                       WHERE
-                         id=$1",array($id));
+    $DB->query("SELECT
+                  subject, views
+                FROM
+                  {$this->table}
+                WHERE
+                  id=$1",array($id));
+    $r = $DB->load_array();
+    if (!$r) return "[No Subject]";
+    return htmlentities($r['subject']) . " <span class='smaller'>({$r['views']} views)</span>";
   }
 
   function thread()
