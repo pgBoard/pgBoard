@@ -116,7 +116,7 @@ function view_get()
     $subtitle .= SPACE.ARROW_RIGHT.SPACE."<a href=\"/admin/togglesticky/".id()."/".md5(session_id())."/\">".($sticky ? "unsticky" :"sticky")."</a>";
     $subtitle .= SPACE.ARROW_RIGHT.SPACE."<a href=\"/admin/togglelocked/".id()."/".md5(session_id())."/\">".($locked ? "unlock" :"lock")."</a>";
   }
-  $View->title(htmlentities($View->subject(id())));
+  $View->title($View->subject(id()));
   $View->subtitle($subtitle);
 
   $View->header();
