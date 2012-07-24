@@ -75,15 +75,16 @@ INSERT INTO pref VALUES (10,3,'info','info',true,false,true,NULL,10);
 INSERT INTO pref VALUES (11,2,'show_email','show email',false,false,true,NULL,12);
 INSERT INTO pref VALUES (12,2,'hidemedia','hide media',false,true,true, NULL,13);
 INSERT INTO pref VALUES (13,2,'ignore','soft ignore',false,true,true,NULL,14);
-INSERT INTO pref VALUES (14,2,'nocollapse','disable collapsing',false,true,true,NULL,18);
-INSERT INTO pref VALUES (15,3,'theme','theme',false,true,false,NULL,22);
+INSERT INTO pref VALUES (14,2,'nocollapse','disable collapsing',false,true,true,NULL,19);
+INSERT INTO pref VALUES (15,3,'theme','theme',false,true,false,NULL,23);
 INSERT INTO pref VALUES (17,2,'nofirstpost','hide firstpost arrow',false,true,true,NULL,15);
-INSERT INTO pref VALUES (18,2,'italicread','italicize read posts',false,true,true,NULL,19);
-INSERT INTO pref VALUES (19,2,'nopostnumber','hide posts #',false,true,true,NULL,20);
-INSERT INTO pref VALUES (20,2,'notabs','hide nav tabs',false,true,true,NULL,21);
+INSERT INTO pref VALUES (18,2,'italicread','italicize read posts',false,true,true,NULL,20);
+INSERT INTO pref VALUES (19,2,'nopostnumber','hide posts #',false,true,true,NULL,21);
+INSERT INTO pref VALUES (20,2,'notabs','hide nav tabs',false,true,true,NULL,22);
 INSERT INTO pref VALUES (21,1,'mincollapse','<span class=''small''>min post # to collapse</span>',false,true,true,50,16);
 INSERT INTO pref VALUES (22,1,'collapseopen','<span class=''small''># open after collapse (min 1)</span>',false,true,true,50,17);
 INSERT INTO pref VALUES (23,1,'externalcss','external css<br/><span class=''small''>(may break color schemes)</span>',false,true,true,300,11);
+INSERT INTO pref VALUES (24,1,'uncollapsecount','<span class=''small''># posts to uncollapse</span>',false,true,true,50,18);
 
 
 CREATE TABLE member_pref

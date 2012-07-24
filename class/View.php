@@ -76,8 +76,12 @@ class BoardView extends Base
     }
     if(!$this->data) $this->data = array();
 
+    $uncollapsecount = UNCOLLAPSE_COUNT_DEFAULT;
     if(session('id') && ($this->type == VIEW_THREAD || $this->type == VIEW_MESSAGE) && !$this->ajax)
     {
+      if (intval(session('uncollapsecount')) >= 1)
+        $uncollapsecount = intval(session('uncollapsecount'));
+
       if($list = array_keys($Core->list_ignored(session('id')))) $list = implode(",",$list);
       else
       $list = "0";
@@ -104,8 +108,7 @@ class BoardView extends Base
     }
 
     $i=1;
-    if(cmd(3,true)) $i = cmd(3,true)+1;
-
+    if(cmd(3,true)) $i = abs(cmd(3,true))+1;
     if(!$this->ajax)
     {
       $hidemedia = get('media') ? "true" : "false";
@@ -113,9 +116,14 @@ class BoardView extends Base
       print "<div id=\"view_".id()."\">\n";
       if($this->collapse && $this->type != VIEW_THREAD_PREVIEW && $this->type != VIEW_MESSAGE_PREVIEW)
       {
+        $uncollapsecount = min($this->collapse, $uncollapsecount);
         print "<div class=\"post clear\" id=\"uncollapse\">\n";
         print "  <ul class=\"postbody odd collapse\">\n";
-        print "    <a href=\"javascript:;\" onclick=\"uncollapse('{$this->table}',$this->collapse,$hidemedia,this);\">show read (".($this->collapse)." posts)</a>\n";
+        print "    <span id=\"uncollapse_links\">\n";
+        print "     <a id=\"uncollapse_some\" href=\"javascript:;\" onclick=\"uncollapser('{$this->table}',$hidemedia,$uncollapsecount);\">show <span id=\"uncollapse_more_counter\">$uncollapsecount</span> previous posts</a>\n";
+        print "     <span id=\"uncollapse_all\">&raquo; <a href=\"javascript:;\" onclick=\"uncollapser('{$this->table}',$hidemedia,null);\">show all <span id=\"uncollapse_counter\">".($this->collapse)."</span> previous posts</a></span>\n";
+        print "    </span>\n";
+        print "    <span id=\"uncollapse_loading\" style=\"display:none\">loading...</span>\n";
         print "  </ul>\n";
         print "</div>\n";
         $this->data(array_slice($this->data,$this->collapse));

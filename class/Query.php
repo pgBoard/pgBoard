@@ -131,7 +131,7 @@ class BoardQuery
   function view_thread($thread=false,$offset,$limit,$posts=false,$cond=false)
   {
     global $Core;
-    
+
     // set query conditionals
     $where = "WHERE tp.thread_id=$thread";
     $order = "ORDER BY tp.date_posted ASC";
@@ -152,7 +152,12 @@ class BoardQuery
     }
     else
     {
-      $offset = $this->view_offset($offset);
+      // This is sort of a hack, but I'm not sure the normal case is actually
+      // useful or expected here (multiplying by some scale).
+      if (substr($offset,0,1) === '-')
+        $offset = 'OFFSET ' . strval(-intval($offset));
+      else
+        $offset = $this->view_offset($offset);
       $limit = $this->view_limit($limit);
     }
 

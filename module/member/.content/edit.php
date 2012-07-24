@@ -19,9 +19,12 @@ $DB->query("SELECT
 $prefs = $DB->load_all_key();
 if(!isset($prefs['mincollapse'])) $prefs['mincollapse'] = COLLAPSE_DEFAULT;
 if(!is_numeric($prefs['mincollapse'])) $prefs['mincollapse'] = COLLAPSE_DEFAULT;
-if(!isset($prefs['collapseopen'])) $prefs['collapseopen'] = COLLAPSE_DEFAULT;
+if(!isset($prefs['collapseopen'])) $prefs['collapseopen'] = COLLAPSE_OPEN_DEFAULT;
 if(!is_numeric($prefs['collapseopen'])) $prefs['collapseopen'] = COLLAPSE_OPEN_DEFAULT;
 if($prefs['collapseopen'] < 1) $prefs['collapseopen'] = 1;
+if(!isset($prefs['uncollapsecount'])) $prefs['uncollapsecount'] = UNCOLLAPSE_COUNT_DEFAULT;
+if(!is_numeric($prefs['uncollapsecount'])) $prefs['uncollapsecount'] = UNCOLLAPSE_COUNT_DEFAULT;
+if($prefs['uncollapsecount'] < 1) $prefs['uncollapsecount'] = 1;
 
 $Base = new Base;
 $Base->type(EDIT);
