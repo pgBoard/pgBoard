@@ -44,6 +44,7 @@ class Base
   public $table;            // table split for thread/message
   public $blocked = false;  // blocked members
   public $subtitle = "";
+  public $header_slot;      // displays under subtitle
   
 
   function __construct()
@@ -69,6 +70,7 @@ class Base
   }
   function subtitle($subtitle) { $this->subtitle = $subtitle; }
   function blocked($blocked) { $this->blocked = $blocked; }
+  function header_slot($header_slot) { $this->header_slot = $header_slot; }
 
   function type($type)
   {
@@ -116,6 +118,11 @@ class Base
     print $this->subtitle;
     print "  </div>\n";
     print "  <div class=\"clear\"></div>\n";
+    if($this->header_slot)
+    {
+      print $this->header_slot;
+      print "  <div class=\"clear\"></div>\n";
+    }
     if($loadmenu) $this->header_menu();
   }
   
