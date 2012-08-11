@@ -24,9 +24,17 @@ function list_get()
     $_title_ .=  " <span class=\"smaller\">&raquo; $$remaining left to raise</span>";
   }
   $List->title($_title_);
+
+  if (PARTY_SHARK && !session('hidemedia'))
+  {
+    $date = getdate();
+    if ($date['wday'] == 5)
+    {
+      $List->header_slot(PARTY_SHARK);
+    }
+  }
+
   $List->header();
-
-
 
   // stickies
   $DB->query($Query->list_thread(true,false,false));

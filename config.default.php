@@ -11,6 +11,8 @@ define("REGISTRATION_OPEN",true);
 define("REGISTRATION_PASSWORD","membersonly"); // set to false to disable this feature
 define("MEMBER_REGEXP","^[a-z0-9_-]{3,15}$"); // regexp to define valid member name
 
+define("PARTY_SHARK", FALSE); // html to display on Fridays or FALSE to disable
+
 define("IGNORE_ENABLED",true); // if you disable this be sure to DELETE * FROM member_ignore
 define("IGNORE_PUBLIC",true); // set to false to make ignoring private
 define("IGNORE_BUFFER","1 year"); // how long from first post until ignore can be used (set false to disable)
