@@ -121,6 +121,22 @@ function quote_post(id)
   $('#body').val($('#body').val()+'[quote]'+info+'\n'+body+'[/quote]\n\n');
 }
 
+function toggle_ignore_thread(id)
+{
+  var status;
+  if($('#ignorecmd').html() == "") status = "ignoring...";
+  if($('#ignorecmd').html() == "un") status = "unignoring...";
+  if(!status) return;
+  $('#ignorecmd').html(status);
+
+  $.ajax(
+  {
+    url: '/thread/toggleignore/'+id+'/',
+    cache: false,
+    success: function(html){ $('#ignorecmd').html(jQuery.trim(html)); }
+  });
+}
+
 function toggle_favorite(id)
 {
   var status;

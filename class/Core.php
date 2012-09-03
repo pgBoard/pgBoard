@@ -118,7 +118,6 @@ class BoardCore
     return $time<time();
   }
   
-
   function list_ignored($member_id)
   {
     global $DB;
@@ -196,6 +195,14 @@ class BoardCore
     if(!session('id')) return false;
     else
     return $DB->check("SELECT true FROM favorite WHERE thread_id=$1 AND member_id=$2",array($thread_id,session('id')));
+  }
+
+  function check_ignored_thread($thread_id)
+  {
+    global $DB;
+    if(!session('id')) return false;
+    $val = $DB->value("SELECT ignore FROM thread_member WHERE thread_id=$1 AND member_id=$2",array($thread_id,session('id')));
+    return $val=="t"?true:false;
   }
 
   function check_dotted($thread_id)
