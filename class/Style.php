@@ -12,8 +12,14 @@ class BoardStyle
     if(!$this->theme)
     {
       if(session('id')) $this->set_theme($Core->member_pref(session('id'),"theme"));
-      if(!$this->theme) $this->set_theme($DB->value("SELECT value FROM theme WHERE main IS true"));
+      if(!$this->theme) $this->load_default();
     }
+  }
+
+  function load_default()
+  {
+    global $DB;
+    $this->set_theme($DB->value("SELECT value FROM theme WHERE main IS true"));
   }
   
   function calc_color($hex)
