@@ -1,11 +1,25 @@
 <?php
 global $Style;
+global $Core;
 
-if(get('theme'))
-if($theme = $DB->value("SELECT value FROM theme WHERE name=$1",array(get('theme'))))
+if (cmd(2))
 {
-  $Style->set_theme($theme);
+  $theme_member_id = $Core->idfromname(cmd(2));
+  if ($theme_member_id)
+  {
+    $theme = $Core->member_pref($theme_member_id, "theme");
+    if ($theme)
+      $Style->set_theme($theme);
+    else
+      $Style->load_default();
+  }
 }
+else if(get('theme'))
+{
+  if ($theme = $DB->value("SELECT value FROM theme WHERE name=$1",array(get('theme'))))
+    $Style->set_theme($theme);
+}
+
 $theme = unserialize($Style->theme);
 foreach($theme as $type => $val) if(substr($val,0,1) == "#") $theme[$type] = substr($val,1);
 
