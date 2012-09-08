@@ -288,7 +288,14 @@ class BoardQuery
     // set query conditionals
     $where = "WHERE mp.message_id=$message";
     $order = "ORDER BY mp.date_posted ASC";
-    $offset = $this->view_offset($offset);
+
+    // This is sort of a hack, but I'm not sure the normal case is actually
+    // useful or expected here (multiplying by some scale).
+    if (substr($offset,0,1) === '-')
+      $offset = 'OFFSET ' . strval(-intval($offset));
+    else
+      $offset = $this->view_offset($offset);
+
     $limit = $this->view_limit($limit);
     $ignore = "";
 
