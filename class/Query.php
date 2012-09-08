@@ -44,7 +44,7 @@ class BoardQuery
   /**
   * build thread listing query
   */
-  function list_thread($sticky=false,$offset,$limit,$threads=false,$cond=false)
+  function list_thread($sticky=false,$offset,$limit,$threads=false,$cond=false,$ignore_threads=true)
   {
     global $Core;
     
@@ -60,6 +60,10 @@ class BoardQuery
     {
       $list = implode(",",$list);
       $ignore = "AND m.id NOT IN ($list)";
+    }
+    if ($ignore_threads)
+    {
+      $ignore .= " AND NOT tm.ignore";
     }
 
     // set query conditionals for stickies only

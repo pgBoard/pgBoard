@@ -132,6 +132,7 @@ CREATE TABLE thread_member
   member_id	        int NOT NULL,
   thread_id	        int NOT NULL,
   undot                 bool NOT NULL DEFAULT false,
+  ignore                bool NOT NULL DEFAULT false,
   date_posted           timestamp,
   last_view_posts       int NOT NULL DEFAULT 0
 );
