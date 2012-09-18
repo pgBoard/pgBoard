@@ -104,6 +104,11 @@ function view_get()
     else
     $subtitle .= SPACE.ARROW_RIGHT.SPACE."<a href=\"javascript:;\" onclick=\"toggle_favorite(".id().");\"><span id=\"fcmd\">remove</span> favorite</a>\n";
 
+    if(!$Core->check_ignored_thread(id()))
+      $subtitle .= SPACE.ARROW_RIGHT.SPACE."<a href=\"javascript:;\" onclick=\"toggle_ignore_thread(".id().");\"><span id=\"ignorecmd\"></span>ignore</a>\n";
+    else
+      $subtitle .= SPACE.ARROW_RIGHT.SPACE."<a href=\"javascript:;\" onclick=\"toggle_ignore_thread(".id().");\"><span id=\"ignorecmd\">un</span>ignore</a>\n";
+
     // undot
     if($Core->check_dotted(id())) $subtitle .= SPACE.ARROW_RIGHT.SPACE."<a href=\"javascript:;\" onclick=\"undot(".id().");\" id=\"undot\">undot</a>\n";
   }
@@ -268,6 +273,47 @@ function listfavoritesbymember_get()
   $List->footer();
 }
 
+function listignoredthreadsbymember_get()
+{
+  global $DB,$Core;
+
+  // get info
+  $id = $Core->idfromname(id());
+  $name = $Core->namefromid($id);
+  $page = cmd(3,true)+1;
+
+  // get threads participiated in
+  $DB->query("SELECT
+                tm.thread_id
+              FROM
+                thread_member tm
+              LEFT JOIN
+                thread t
+              ON
+                t.id = tm.thread_id
+              WHERE
+                tm.member_id=$1 AND tm.ignore=true
+              ORDER BY
+                t.date_last_posted DESC",array($id));
+  $threads = $DB->load_all('thread_id');
+  if (!$threads) $threads = array(0);
+  if(!$id || !$name) return to_index();
+
+  $Query = new BoardQuery;
+  $List = new BoardList;
+  $List->type(LIST_THREAD_HISTORY);
+
+  $List->title("Ignored threads: $name");
+  $List->subtitle("page: $page");
+  $List->header();
+
+  $DB->query($Query->list_thread(false,cmd(3,true),cmd(4,true),$threads, false, false));
+  $List->data($DB->load_all());
+  $List->thread();
+
+  $List->footer();
+}
+
 function viewbymember_get()
 {
   global $DB,$Core;
@@ -293,6 +339,30 @@ function viewbymember_get()
   $View->footer();
 }
 
+function toggleignore_get()
+{
+  global $DB,$Core;
+
+  if(!session('id'))
+  {
+    print "failed to change";
+    exit_clean();
+  }
+  if($Core->check_ignored_thread(id()))
+  {
+    // It's ignored -- unignore it
+    $DB->query("UPDATE thread_member SET ignore=false WHERE thread_id=$1 AND member_id=$2",array(id(),session('id')));
+    print "";
+    exit_clean();
+  }
+  else
+  {
+    $DB->query("UPDATE thread_member SET ignore=true WHERE thread_id=$1 AND member_id=$2",array(id(),session('id')));
+    print "un";
+    exit_clean();
+  }
+}
+
 function togglefavorite_get()
 {
   global $DB,$Core;
@@ -316,7 +386,6 @@ function togglefavorite_get()
     print "remove";
     exit_clean();
   }
-  
 }
 
 function undot_get()

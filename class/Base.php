@@ -252,6 +252,7 @@ class Base
         print "  <li><a href=\"/thread/listbymember/".id()."/\">threads created</a></li>\n";
         print "  <li><a href=\"/thread/viewbymember/".id()."/\">posts created</a></li>\n";
         print "  <li><a href=\"/thread/listfavoritesbymember/".id()."/\">favorites</a></li>\n";
+        print "  <li><a href=\"/thread/listignoredthreadsbymember/".id()."/\">ignored threads</a></li>\n";
         print "  <li><a href=\"/member/editcolors/".id()."/\">color scheme</a></li>\n";
         if(session('id') == $idnum) print "  <li><a href=\"/member/edit/\">edit account</a></li>\n";
         if(session('admin'))
