@@ -63,7 +63,7 @@ class BoardQuery
     }
     if ($ignore_threads)
     {
-      $ignore .= " AND NOT tm.ignore";
+      $ignore .= " AND tm.ignore IS NOT TRUE";
     }
 
     // set query conditionals for stickies only
