@@ -114,6 +114,24 @@ function status_get()
   print "</ol>\n";
 
   $DB->query("SELECT
+                count(*) as num,
+                (SELECT subject FROM thread WHERE id=tm.thread_id) as subject,
+                tm.thread_id as id
+              FROM
+                thread_member tm
+              WHERE
+                ignore IS TRUE
+              GROUP BY
+                tm.thread_id
+              ORDER BY num DESC
+              LIMIT 25");
+
+  print "<br/><br/><strong>top 25 most ignored threads:</strong><br/><br/>";
+  print "<ol style=\"padding-left:30px\">\n";
+  while($row = $DB->load_array()) print "  <li><a href=\"/thread/view/$row[id]/\">".strip_tags($row['subject'])."</a> ($row[num])</li>\n";
+  print "</ol>\n";
+
+  $DB->query("SELECT
                 m.name
               FROM
                 member m
