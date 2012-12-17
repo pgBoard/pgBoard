@@ -7,7 +7,7 @@ function nosnow(stop) {
 }
 </script>
 <script src="/lib/snowstorm/snow.js"></script>
-<img src="/lib/snowstorm/off.gif" onclick="nosnow(this);" style="float:right"/>
+<img src="/lib/snowstorm/off.gif" onclick="nosnow(this);" style="float:right;cursor:pointer"/>
 <?php
 }
 if(post('nosnow')) {
