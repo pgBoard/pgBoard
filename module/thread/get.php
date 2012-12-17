@@ -105,9 +105,9 @@ function view_get()
     $subtitle .= SPACE.ARROW_RIGHT.SPACE."<a href=\"javascript:;\" onclick=\"toggle_favorite(".id().");\"><span id=\"fcmd\">remove</span> favorite</a>\n";
 
     if(!$Core->check_ignored_thread(id()))
-      $subtitle .= SPACE.ARROW_RIGHT.SPACE."<a href=\"javascript:;\" onclick=\"toggle_ignore_thread(".id().");\"><span id=\"ignorecmd\"></span>ignore</a>\n";
+      $subtitle .= SPACE.ARROW_RIGHT.SPACE."<a href=\"javascript:;\" onclick=\"toggle_ignore_thread(".id().");\"><span id=\"ignorecmd\">ignore</span></a>\n";
     else
-      $subtitle .= SPACE.ARROW_RIGHT.SPACE."<a href=\"javascript:;\" onclick=\"toggle_ignore_thread(".id().");\"><span id=\"ignorecmd\">un</span>ignore</a>\n";
+      $subtitle .= SPACE.ARROW_RIGHT.SPACE."<a href=\"javascript:;\" onclick=\"toggle_ignore_thread(".id().");\"><span id=\"ignorecmd\">unignore</span></a>\n";
 
     // undot
     if($Core->check_dotted(id())) $subtitle .= SPACE.ARROW_RIGHT.SPACE."<a href=\"javascript:;\" onclick=\"undot(".id().");\" id=\"undot\">undot</a>\n";
@@ -352,13 +352,13 @@ function toggleignore_get()
   {
     // It's ignored -- unignore it
     $DB->query("UPDATE thread_member SET ignore=false WHERE thread_id=$1 AND member_id=$2",array(id(),session('id')));
-    print "";
+    print "ignore";
     exit_clean();
   }
   else
   {
     $DB->query("UPDATE thread_member SET ignore=true WHERE thread_id=$1 AND member_id=$2",array(id(),session('id')));
-    print "un";
+    print "unignore";
     exit_clean();
   }
 }

@@ -124,8 +124,8 @@ function quote_post(id)
 function toggle_ignore_thread(id)
 {
   var status;
-  if($('#ignorecmd').html() == "") status = "ignoring...";
-  if($('#ignorecmd').html() == "un") status = "unignoring...";
+  if($('#ignorecmd').html() == "ignore") status = "ignoring...";
+  if($('#ignorecmd').html() == "unignore") status = "unignoring...";
   if(!status) return;
   $('#ignorecmd').html(status);
 
