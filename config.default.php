@@ -15,6 +15,9 @@ define("IGNORE_ENABLED",true); // if you disable this be sure to DELETE * FROM m
 define("IGNORE_PUBLIC",true); // set to false to make ignoring private
 define("IGNORE_BUFFER","1 year"); // how long from first post until ignore can be used (set false to disable)
 
+define("IGNORED_THREADS_PUBLIC",true); // set to false to make thread ignoring private
+define("FAVORITES_PUBLIC",true); // set to false to make favorite threads private
+
 define("LIST_DEFAULT_LIMIT",100); // number of threads per page
 define("COLLAPSE_DEFAULT",25); // default value to collapse at
 define("COLLAPSE_OPEN_DEFAULT",5); // default number of posts to leave open after collapse

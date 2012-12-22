@@ -198,6 +198,8 @@ function listbymemberposted_get()
   $name = $Core->namefromid($id);
   $page = cmd(3,true)+1;
 
+  if(!$id || !$name) return to_index();
+
   // get threads participiated in
   $DB->query("SELECT
                 tm.thread_id
@@ -214,8 +216,7 @@ function listbymemberposted_get()
               ORDER BY
                 t.date_last_posted DESC",array($id));
   $threads = $DB->load_all('thread_id');
-
-  if(!$id || !$name) return to_index();
+  if (!$threads) $threads = array(0);
 
   $Query = new BoardQuery;
   $List = new BoardList;
@@ -241,6 +242,9 @@ function listfavoritesbymember_get()
   $name = $Core->namefromid($id);
   $page = cmd(3,true)+1;
 
+  if(!$id || !$name) return to_index();
+  if(!FAVORITES_PUBLIC && $id != session('id')) return to_index();
+
   // get threads participiated in
   $DB->query("SELECT
                 f.thread_id
@@ -255,8 +259,7 @@ function listfavoritesbymember_get()
               ORDER BY
                 t.date_last_posted DESC",array($id));
   $threads = $DB->load_all('thread_id');
-
-  if(!$id || !$name) return to_index();
+  if (!$threads) $threads = array(0);
 
   $Query = new BoardQuery;
   $List = new BoardList;
@@ -282,6 +285,9 @@ function listignoredthreadsbymember_get()
   $name = $Core->namefromid($id);
   $page = cmd(3,true)+1;
 
+  if(!$id || !$name) return to_index();
+  if(!IGNORED_THREADS_PUBLIC && $id != session('id')) return to_index();
+
   // get threads participiated in
   $DB->query("SELECT
                 tm.thread_id
@@ -297,7 +303,6 @@ function listignoredthreadsbymember_get()
                 t.date_last_posted DESC",array($id));
   $threads = $DB->load_all('thread_id');
   if (!$threads) $threads = array(0);
-  if(!$id || !$name) return to_index();
 
   $Query = new BoardQuery;
   $List = new BoardList;
