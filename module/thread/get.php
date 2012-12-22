@@ -214,6 +214,7 @@ function listbymemberposted_get()
               ORDER BY
                 t.date_last_posted DESC",array($id));
   $threads = $DB->load_all('thread_id');
+  if (!$threads) $threads = array(0);
 
   if(!$id || !$name) return to_index();
 
@@ -255,6 +256,7 @@ function listfavoritesbymember_get()
               ORDER BY
                 t.date_last_posted DESC",array($id));
   $threads = $DB->load_all('thread_id');
+  if (!$threads) $threads = array(0);
 
   if(!$id || !$name) return to_index();
 
