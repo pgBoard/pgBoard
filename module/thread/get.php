@@ -243,6 +243,7 @@ function listfavoritesbymember_get()
   $page = cmd(3,true)+1;
 
   if(!$id || !$name) return to_index();
+  if(!FAVORITES_PUBLIC && $id != session('id')) return to_index();
 
   // get threads participiated in
   $DB->query("SELECT
@@ -285,6 +286,7 @@ function listignoredthreadsbymember_get()
   $page = cmd(3,true)+1;
 
   if(!$id || !$name) return to_index();
+  if(!IGNORED_THREADS_PUBLIC && $id != session('id')) return to_index();
 
   // get threads participiated in
   $DB->query("SELECT
