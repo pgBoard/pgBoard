@@ -153,7 +153,8 @@ http://www.google.com/ <-- automatic link
 [sub]subscript[/sub]
 [sup]superscript[/sup]
 [soundcloud]http://soundcloud.com/goingslowly/047-railroad-lullabye[/soundcloud]
-[youtube]http://youtube.com/watch?v=WAwLYJYsa0A[/youtube] or [youtube]http://youtu.be/L8xXb-P4wZY[/youtube]
+[youtube]http://youtu.be/L8xXb-P4wZY[/youtube] or [youtube]http://www.youtube.com/watch?v=L8xXb-P4wZY[/youtube] (video)
+[youtube]https://www.youtube.com/playlist?list=PLf7Pime6sgNUom_fs9wktBPMo9IrEHJT-[/youtube] (playlist)
 [vimeo]http://vimeo.com/2467457[/vimeo]
 [quote]quote[/quote]
 </pre>

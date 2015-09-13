@@ -35,34 +35,165 @@ class BoardParse
     }
   }
 
+  // Using a set of regexps try to extract the video id of as many forms of current and legacy
+  // youtube URLs as possible.  Match and allow playlist, users' uploads, and query style embed
+  // URLs too, but just pass those through since they don't need special handling.
+  //
+  // Collect the params and process them:
+  //   - convert &t to &start params to work with the new embed style time specifiers.
+  //   - rewrite 'autoplay' param to disable that functionality
+  //
+  // Return an iframe embed tag for the video that supports all platforms automatically as per
+  // the youtube embed docs here: https://developers.google.com/youtube/player_parameters
   function youtube($href)
   {
-    $host = parse_url($href[1]);
-    $host = isset($host['host']) ? $host['host'] : "";
-    
-    // Parse regular and shortened youtube URLs into the  youtube.com/v/#######  style so they work in browser and mobile
-    if($host == "youtube.com" || $host == "www.youtube.com" || $host == "youtu.be") {
-      if($host == "youtu.be")
-      {
-        $href = str_replace("youtu.be/","youtube.com/v/",$href[1]);
-      }
-      else 
-      {
-        $href = str_replace("watch?v=","v/",$href[1]);
-      }
-      // disable autoplay
-      $href = str_replace("autoplay=","no=",$href);
-      return "<object width=\"425\" height=\"355\"><param name=\"movie\" value=\"$href\"></param><param name=\"wmode\" value=\"transparent\"></param><embed src=\"$href\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"425\" height=\"355\"></embed></object>";
+
+    // make sure no entities or escapes are in the URL string so that the regexps are simpler
+    $href[1] = htmlspecialchars_decode($href[1]);
+
+    $video_width  = 425;
+    $video_height = 355;
+
+    $video_id     = "";
+    $video_params = "";
+
+    $playlist_id = "";
+    $playlist_params = "";
+
+    $playlist_url = "";
+
+
+    if ( preg_match("/\A.*youtu\.be\/(.*?)(\Z|\?)+(.*)/i", $href[1], $matches) ) {
+
+      // Match https://youtu.be/VIDEO_ID?foo=1&bar=baz
+      // Click Share button on a video for this short URL
+      $video_id     = $matches[1];
+      $video_params = $matches[3];
+
+    } elseif ( preg_match("/\A.*youtube\.com\/embed\/(.*?)(\Z|\?)+(.*)/i", $href[1], $matches) ) {
+
+      // Match https://www.youtube.com/embed/VIDEO_ID?foo=1&bar=baz
+      // Share -> Embed and copy src from the embed code
+      $video_id     = $matches[1];
+      $video_params = $matches[3];
+
+    } elseif ( preg_match("/\A.*youtube\.com\/watch\?v=(.*?)(\Z|\&)+(.*)/i", $href[1], $matches) ) {
+
+      // Match https://www.youtube.com/watch?v=VIDEO_ID&foo=1&bar=baz
+      // This seems to show in the URL bar when you arrive on a video from an external link
+      $video_id     = $matches[1];
+      $video_params = $matches[3];
+
+    } elseif ( preg_match("/\A.*youtube\.com\/v\/(.*?)(\Z|\?)+(.*)/i", $href[1], $matches) ) {
+
+      // Match http://www.youtube.com/v/VIDEO_ID?version=3&foo=1&bar=baz
+      // Embedded AS3 player: (DEPRECATED)
+      $video_id     = $matches[1];
+      $video_params = $matches[3];
+
+    } elseif ( preg_match("/\A.*youtube\.com\/apiplayer\?video_id=(.*?)(\Z|\&)+(.*)/i", $href[1], $matches) ) {
+
+      // Match http://www.youtube.com/apiplayer?video_id=VIDEO_ID&version=3
+      // Chromeless AS3 player: (DEPRECATED)
+      $video_id     = $matches[1];
+      $video_params = $matches[3];
+
+    } elseif ( preg_match("/\A.*www\.youtube\.com\/playlist\?list=(.*?)(\Z|\&)(.*)\Z/i", $href[1], $matches) ) {
+
+      // Match: Playlist Share link from playlist page -> click share button
+      // https://www.youtube.com/playlist?list=PLf7Pime6sgNUom_fs9wktBPMo9IrEHJT-&foo=bar
+      $playlist_id     = $matches[1];
+      $playlist_params = $matches[3];
+
+    } elseif ( preg_match("/\A.*youtube\.com\/embed\?listType=playlist&list=(.*)\Z/i", $href[1], $matches) ) {
+
+      // Match: Playlist embed http://www.youtube.com/embed?listType=playlist&list=PLC77007E23FF423C6
+      $playlist_url = $href[1];
+
+    } elseif ( preg_match("/\A.*youtube\.com\/embed\?listType=user_uploads&list=(.*)\Z/i", $href[1], $matches) ) {
+
+      // Match: Username's videos list: http://www.youtube.com/embed?listType=user_uploads&list=KenBlockRacing
+      $playlist_url = $href[1];
+
+    } elseif ( preg_match("/\A.*youtube\.com\/embed\?listType=search\&list=(.*)\Z/i", $href[1], $matches) ) {
+
+      // Match: search query video list: http://www.youtube.com/embed?listType=search&list=QUERY
+      $playlist_url = $href[1];
+
+    } else {
+      // how to errrrrror?
+      return $href[1];
     }
 
-    return $href[1];
+    // Split the params out and process them if they exist
+    if ( $video_params !== "" ) {
+
+      // Handle a single parameter or a list
+      if ( strpos( "&", $video_params ) === FALSE ) {
+        $params = explode( "&", $video_params );
+      } else {
+        $params = [ $video_params ];
+      }
+
+      for ( $i = 0; $i < count($params); $i++ ) {
+
+        // convert regular video URLs that use &t=200 to start at 200sec into embed url style that uses &start=200 or &start=3m20s
+        $params[$i] = preg_replace("/\At=/i", "start=", $params[$i]);
+
+        // Disable autoplay
+        $params[$i] = preg_replace("/\Aautoplay=/i", "no=", $params[$i]);
+
+      }
+
+      $video_params = implode( "&", $params );
+
+    }
+
+    // Build the proper URL depending on what the above regexps matched
+    if ( $video_id != "" ) {
+
+      $video_url = "https://www.youtube.com/embed/$video_id";
+
+      if ( $video_params != "" ) {
+        $video_url .= "?$video_params";
+      }
+
+    } elseif ( $playlist_url != "" ) {
+
+      // Make sure none of the playlists can autoplay either
+      $video_url = str_replace("autoplay=","no=", $playlist_url);
+
+    } elseif ( $playlist_id != "" ) {
+
+      // Build a playlist embed URL from the playlist id & params of a Playlist "share" URL
+      // https://www.youtube.com/embed/videoseries?list=PLf7Pime6sgNUom_fs9wktBPMo9IrEHJT-
+      $video_url = "https://www.youtube.com/embed/videoseries?list=$playlist_id";
+
+      if ( $playlist_params != "" ) {
+        $playlist_params = str_replace("autoplay=","no=", $playlist_params);
+
+        $video_url .= "&$playlist_params";
+      }
+
+    } else {
+
+      // If we matched nothing just pass the text back to be rendered in plain text
+      return $url[1];
+
+    }
+
+    $video_url = htmlspecialchars($video_url);
+
+    return "<iframe width=\"$video_width\" height=\"$video_height\" src=\"$video_url\" frameborder=\"0\" allowfullscreen></iframe>";
+
   }
+
 
   function soundcloud($href)
   {
     $host = parse_url($href[1]);
     $host = isset($host['host']) ? $host['host'] : "";
-    
+
     if($host == "soundcloud.com" || $host == "www.soundcloud.com" ) {
 
       $height = 81;
@@ -90,7 +221,7 @@ class BoardParse
     $host = isset($host['host']) ? $host['host'] : "";
 
     // Convert Vimeo links http://vimeo.com/######### to player.vimeo.com/video/####### style and embed with their iframe code
-    if($host == "vimeo.com") 
+    if($host == "vimeo.com")
     {
       $href = str_replace("vimeo.com","player.vimeo.com/video", $href[1]);
       $href.="?title=0&amp;byline=0&amp;portrait=0";
