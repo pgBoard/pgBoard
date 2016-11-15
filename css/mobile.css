@@ -46,7 +46,6 @@
 	#auth {
 		height: auto;
 		margin-bottom: 0;
-		padding-top: 10px;
 		}
 		
 	.subject {
@@ -137,7 +136,7 @@
 
 @media only screen and (max-width: 586px) {
 	.subject {
-		width: 59%;
+		width: 57%;
 	}
 }
 
@@ -145,6 +144,10 @@
 @media only screen and (max-width: 345px) {
 	.setdown {
 	    font-size: 80%;
+	}
+	#auth {
+		padding-top: 10px;
+		margin-bottom: -10px;
 	}
 	.posts {
 		width: 47px;
