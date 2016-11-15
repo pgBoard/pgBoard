@@ -46,6 +46,7 @@
 	#auth {
 		height: auto;
 		margin-bottom: 0;
+		padding-top: 10px;
 		}
 		
 	.subject {
@@ -90,7 +91,8 @@
 		}
 		
 	.setdown { 
-		min-width:320px; white-space:nowrap; 
+		min-width:320px; 
+		/*white-space:nowrap; */
 		font-size: 70%;
 	}
 		
@@ -138,15 +140,19 @@
 		width: 59%;
 	}
 }
-@media only screen and (max-width: 400px) {
-	.subject {
-		width: 55%;
-	}
-}
 
 /* shrink nav for smaller phones, eg iphone 5 and below */
 @media only screen and (max-width: 345px) {
 	.setdown {
-	    font-size: 63%;
+	    font-size: 80%;
+	}
+	.posts {
+		width: 47px;
+	}
+	html body {
+		font-size: 72%;
+	}
+	.subject {
+		width: 58%;
 	}
 }
