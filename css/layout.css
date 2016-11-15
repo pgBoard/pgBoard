@@ -4,6 +4,7 @@
   clear: both;
   margin: 0px auto;
   min-width: 650px;
+  max-width: 1400px;
   width: 99%;
 }
 #content .pad { padding: 10px; }
