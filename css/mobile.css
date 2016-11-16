@@ -21,10 +21,6 @@
 		font-size: 89%;
 	}
 			
-	.title {
-		font-size: 100%;
-		color: #ccc;
-	}
 	.subtitle, .subtitle a {
 		font-size: 80%;
 		color: #ccc;
@@ -103,6 +99,10 @@
 }
 
 @media only screen and (max-width: 586px) {
+	.title {
+		font-size: 100%;
+		color: #ccc;
+	}
 	.nav li {
 		margin-left: 0;
 		margin-right: 4px;
