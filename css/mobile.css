@@ -21,10 +21,7 @@
 		font-size: 89%;
 	}
 			
-	.subtitle, .subtitle a {
-		font-size: 80%;
-		color: #ccc;
-	}
+
 	#content {
 		display: block;
 		width: 100% !important;
@@ -101,6 +98,10 @@
 @media only screen and (max-width: 586px) {
 	.title {
 		font-size: 100%;
+		color: #ccc;
+	}
+	.subtitle, .subtitle a {
+		font-size: 80%;
 		color: #ccc;
 	}
 	.nav li {
