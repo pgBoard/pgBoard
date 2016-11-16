@@ -6,6 +6,7 @@ require_once("config.php");
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title><?php print isset($_title_)?$_title_:TITLE_BOARD; ?></title>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
 <style type="text/css">
 @import "/css/core.css";
 <?php

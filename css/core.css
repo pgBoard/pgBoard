@@ -6,6 +6,7 @@
 @import "/css/member.css";
 @import "/css/dropmenu.css";
 @import "/lib/jQuery/datePicker.css";
+@import "/css/mobile.css";
 
 /* Start Reset */
 * { margin: 0px; padding: 0px; }
