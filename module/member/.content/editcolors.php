@@ -27,7 +27,10 @@ $fontsizes = array("1"=>"10pt",
                    "1.1"=>"11pt",
                    "1.2"=>"12pt",
                    "1.3"=>"13pt",
-                   "1.4"=>"14pt");
+                   "1.4"=>"14pt",
+                   "1.5"=>"15pt",
+                   "1.6"=>"16pt",
+                   "1.7"=>"17pt");
 ?>
 <!--
 Copyright (c) 2007 John Dyer (http://johndyer.name)
