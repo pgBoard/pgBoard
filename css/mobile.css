@@ -92,7 +92,7 @@
 	.bottom li {  border: 0; font-weight:normal; }
 
 	textarea { width: 100% !important; font-size:140%;}
-	input[type=text], #m { max-width: 100% !important; }
+	input[type=text], #m { width: 100% !important; }
 	.coreform .submit { margin-left: 10px; }
 	.firstpost { padding: .4em .4em 1em .4em; }
 	.postbody a { text-decoration:underline; !important; }
