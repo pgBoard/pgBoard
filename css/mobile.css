@@ -1,4 +1,6 @@
-@media only screen and (max-width: 1105px){
+@media only screen and (max-width: 1150px){
+	#quicksearch { display:none; }
+
 	.nav { 
 		width: 100%; 
 		overflow: auto; 
@@ -8,37 +10,32 @@
 		/*min-width: 790px; */
 		display: inline-flex;
 	}
-	.view { overflow: auto; }
-	#quicksearch { display:none; }
-	.nav.top { min-height: 69px; }
-	.nav li { white-space: nowrap; }
-	
-	.nav.top li a[title="irc"] { display: block; }
-	.nav.top li a[title="chat in realtime"] { display: block; }
-	.nav li a[title="send a message to another member"] { display: block; }
-	.nav.top li:nth-of-type(4), .nav li:nth-of-type(6) {
-		display:block;
+	.nav.bottom { 
+		display: inline-flex; 
+		overflow: auto; 
+		-webkit-overflow-scrolling: touch; 
 	}
-	
+	.nav li { white-space: nowrap; }
+	.nav li a {
+	    padding: 1em 1em;
+	  }
+	.subject { width: 47%; }
+	.box {
+		overflow:auto;
+	}
+	.view { overflow: auto; }
+	.nav.top { min-height: 80px; }
+
 }
 
 @media only screen and (max-width: 930px){
-
-	/*
-	iframe {
-		display: none;
-		}
-	*/
-		
+	
 	html body {
 		margin: 0;
 		padding: 0px 0px;
-		/*
-		font-size: 89%;
-		*/
 	}
 			
-	img { width: 100%; }
+	img { max-width: 100%; }
 
 	#content {
 		display: block;
@@ -55,6 +52,7 @@
 	}
 	#auth {
 		height: auto;
+		padding-top: 10px;
 		margin-bottom: 0;
 	}
 	.subject {
@@ -70,9 +68,8 @@
 	}
 	.posts {
 		float: right!important;
-		width: 60px;
+		width: 40px;
 	}
-
 		
 	.pref { float:none; }	
 	body ul.list.read { border-left: 0; border-right: 0; margin-left: 0; }
@@ -94,11 +91,8 @@
 	.list .lastpost { color: #000; display:none; }
 
 	.bottom li {  border: 0; font-weight:normal; }
-	/*.postinfo { font-size:69%; }*/
-	/*.controls { font-size: 70%; position: relative; top: 1px;left: 1px; }*/
-	/*.count { font-size:80%; }*/
-	.postinfo .memberlink { /*font-size:150%; margin-right: 10px;*/ }
-	textarea { width: 95% !important; }
+
+	textarea { width: 100% !important; font-size:140%;}
 	.coreform .submit { margin-left: 10px; }
 	.firstpost { padding: .4em .4em 1em .4em; }
 	.postbody a { text-decoration:underline; !important; }
@@ -106,34 +100,18 @@
 	
 	.nav li a[title="view your messages"] { text-align: center; } 
 	.nav li a[title="donate!"] { display: block; }
-	
+
+	.title, .subtitle, .subtitle a {
+		opacity: 0.8;
+	}	
 }
 
 @media only screen and (max-width: 850px){
-	/*.nav li a[title="send a message to another member"] { display: none; }*/
 	.view li { margin:0px; }
 }
 
-/*
-@media only screen and (max-width: 630px) {
-	.setdown { 
-		min-width:320px; 
-		white-space:nowrap; 
-		font-size: 66%;
-	}
-}
-*/
-
 @media only screen and (max-width: 586px) {
-	.title {
-		/*font-size: 100%;*/
-		/*color: #ccc;*/
-	}
-	.subtitle, .subtitle a {
-		/*font-size: 80%;*/
-		/*color: #ccc;*/
-	}
-	/*.setdown { min-width: 800px; }*/
+
 	.nav.top li {
 		margin-left: 0;
 		margin-right: 4px;
@@ -161,26 +139,17 @@
 	}
 
 	.subject {
-		width: 59%;
+		width: 61%;
 	}
+	.nav.top { min-height: 69px; }
 }
 
-/* shrink nav for smaller phones, eg iphone 5 and below */
 @media only screen and (max-width: 380px) {
-	.setdown {
-	    /*font-size: 80%;*/
-	    /*font-size: 72%;*/
-	    /*min-width: 600px;*/
-	}
 	#auth {
-		padding-top: 10px;
-		margin-bottom: -10px;
+		margin-bottom: 0px;
 	}
 	.posts {
 		width: 47px;
-	}
-	html body {
-		/*font-size: 72%;*/
 	}
 	.subject {
 		width: 58%;
