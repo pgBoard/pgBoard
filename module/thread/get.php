@@ -111,6 +111,8 @@ function view_get()
 
     // undot
     if($Core->check_dotted(id())) $subtitle .= SPACE.ARROW_RIGHT.SPACE."<a href=\"javascript:;\" onclick=\"undot(".id().");\" id=\"undot\">undot</a>\n";
+
+    $subtitle .= SPACE.ARROW_RIGHT.SPACE."<a href=\"#bottom\" id=\"last\">last &#8681;</a>\n";
   }
 
   if(session('admin'))
