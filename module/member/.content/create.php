@@ -15,7 +15,7 @@ if(!REGISTRATION_PASSWORD && !session('authorized')) $_SESSION['authorized'] = t
 if(REGISTRATION_PASSWORD && !session('authorized'))
 {
   $Form = new Form;
-  $Form->header(url(0,-2)."authorize/","post",FORM_SALT);
+  $Form->header("/member/authorize/","post",FORM_SALT);
   
   $Form->fieldset_open("Registration Authorization");
   $Form->add_password("password","Password:");
