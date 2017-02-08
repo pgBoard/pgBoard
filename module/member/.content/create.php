@@ -12,10 +12,11 @@ print LEGAL;
 if(!REGISTRATION_PASSWORD && !session('authorized')) $_SESSION['authorized'] = true;
 
 
+
 if(REGISTRATION_PASSWORD && !session('authorized'))
 {
   $Form = new Form;
-  $Form->header("/member/authorize/","post",FORM_SALT);
+  $Form->header(url(0,-1)."authorize/","post",FORM_SALT);
   
   $Form->fieldset_open("Registration Authorization");
   $Form->add_password("password","Password:");
