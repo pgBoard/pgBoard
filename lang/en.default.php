@@ -18,6 +18,7 @@ define("ERROR_AUTH","Your name and/or password did not match our records.<br/>")
 define("ERROR_MUST_LOGIN","You must be logged in to do that.");
 define("ERROR_MEMBER_NOTFOUND","Member not found.");
 define("ACCOUNT_CREATED","<h3>Your account has been created and a password has been emailed to you.</h3>");
+define("INACTIVITY_WARNING","Your account will be flagged for inactivity soon. Please consider participating at least once within this interval: ".INACTIVITY_LOCK_INTERVAL.".");
 define("SIGNUP_EMAIL_SUBJECT","welcome to the board.");
 define("SIGNUP_EMAIL_BODY","Here are your login credentials:<br/><br/>Name: %NAME%<br/>Pass: %PASS%<br/><br/>Enjoy!");
 define("NO_RESULTS","<h4>No results found!</h4>");

@@ -169,7 +169,27 @@ class BoardSecurity
     else
     return $DB->check("SELECT true FROM member WHERE is_admin IS true AND id=$1",array($id));
   }
-  
+
+  function active_within($interval, $id)
+  {
+    global $DB;
+    if(!is_numeric($id)) return false;
+    else
+    return $DB->check("WITH active_check AS (
+  SELECT
+    m.id AS member_id,
+    GREATEST(
+      MAX(mlu.created_at),
+      MAX(m.last_post),
+      MAX(mp.date_posted)
+    ) AS last
+  FROM member m
+  LEFT JOIN message_post mp ON mp.member_id=m.id
+  LEFT JOIN member_lurk_unlock mlu ON mlu.member_id=m.id
+  GROUP BY m.id
+) SELECT true FROM active_check WHERE last > now()-interval '$interval' AND member_id=$1", array($id));
+  }
+
   function logout()
   {
     if(id() != MD5(session_id())) return;

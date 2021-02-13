@@ -39,6 +39,13 @@ CREATE TABLE member_ignore
   ignore_member_id  int
 );
 
+CREATE TABLE member_lurk_unlock
+(
+  id           serial PRIMARY KEY,
+  member_id    int NOT NULL REFERENCES member(id),
+  created_at   date NOT NULL DEFAULT now()
+);
+
 CREATE TABLE pref_type
 (
   id      serial PRIMARY KEY,
