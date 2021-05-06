@@ -39,14 +39,14 @@ class BoardParse
   {
     $host = parse_url($href[1]);
     $host = isset($host['host']) ? $host['host'] : "";
-    
+
     // Parse regular and shortened youtube URLs into the  youtube.com/v/#######  style so they work in browser and mobile
     if($host == "youtube.com" || $host == "www.youtube.com" || $host == "youtu.be") {
       if($host == "youtu.be")
       {
         $href = str_replace("youtu.be/","youtube.com/v/",$href[1]);
       }
-      else 
+      else
       {
         $href = str_replace("watch?v=","v/",$href[1]);
       }
@@ -62,7 +62,7 @@ class BoardParse
   {
     $host = parse_url($href[1]);
     $host = isset($host['host']) ? $host['host'] : "";
-    
+
     if($host == "soundcloud.com" || $host == "www.soundcloud.com" ) {
 
       $height = 81;
@@ -90,7 +90,7 @@ class BoardParse
     $host = isset($host['host']) ? $host['host'] : "";
 
     // Convert Vimeo links http://vimeo.com/######### to player.vimeo.com/video/####### style and embed with their iframe code
-    if($host == "vimeo.com") 
+    if($host == "vimeo.com")
     {
       $href = str_replace("vimeo.com","player.vimeo.com/video", $href[1]);
       $href.="?title=0&amp;byline=0&amp;portrait=0";
@@ -98,6 +98,55 @@ class BoardParse
       return "<iframe src=\"$href\" width=\"425\" height=\"239\" frameborder=\"0\" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>";
     }
 
+    return $href[1];
+  }
+
+  function tweet($href)
+  {
+    $url = parse_url($href[1]);
+    $host = isset($url['host']) ? $url['host'] : "";
+    // Is the URL from a Twitter hostname with a path component?
+    if(($host == "twitter.com" || $host == "www.twitter.com" || $host == "mobile.twitter.com") && isset($url['path']))
+    {
+      // The tweet ID is the last part of the path, and it should be numeric.
+      $tweet_id = end(explode('/', $url['path']));
+      if ($tweet_id && is_numeric($tweet_id))
+      {
+        // Assign this tweet's DOM elements unique IDs to distinguish them from
+        // other tweet embeds on the page.
+        $id = rand(1000000,99999999);
+        // This is the tweet target element.
+        $embed = '<span id="tt-' . $id . '"></span>';
+        $embed .= '<script>';
+        // If the Twitter widgets JS is already loaded on the page,
+        $embed .= 'if (typeof twttr !== "undefined") {';
+        // just create the tweet.
+        $embed .= '  twttr.widgets.createTweet(';
+        $embed .= '    "' . $tweet_id . '",';
+        $embed .= '    document.getElementById("tt-' . $id . '"),';
+        $embed .= '    { dnt: true, theme: "dark" }';
+        $embed .= '  );';
+        $embed .= '} else {';
+        // Otherwise, load the widgets JS.
+        $embed .= '  var script' . $id . ' = document.createElement("script");';
+        $embed .= '  script' . $id . '.async = true;';
+        $embed .= '  script' . $id . '.id = "ts-' . $id . '";';
+        $embed .= '  script' . $id . '.setAttribute("src", "https://platform.twitter.com/widgets.js");';
+        $embed .= '  document.head.appendChild(script' . $id . ');';
+        // When the lib is done loading,
+        $embed .= '  $("#ts-' . $id . '").load(function() {';
+        // create the tweet.
+        $embed .= '    twttr.widgets.createTweet(';
+        $embed .= '      "' . $tweet_id . '",';
+        $embed .= '      document.getElementById("tt-' . $id . '"),';
+        $embed .= '      { dnt: true, theme: "dark" }';
+        $embed .= '    );';
+        $embed .= '  });';
+        $embed .= '}';
+        $embed .= '</script>';
+        return $embed;
+      }
+    }
     return $href[1];
   }
 
@@ -128,6 +177,7 @@ class BoardParse
       $s = preg_replace("#\[youtube\](.*)\[\/youtube\]#Ui","<a href=\"$1\" onclick=\"window.open(this.href); return false;\">YOUTUBE REMOVED CLICK TO VIEW</a>",$s);
       $s = preg_replace("#\[vimeo\](.*)\[\/vimeo\]#Ui","<a href=\"$1\" onclick=\"window.open(this.href); return false;\">VIMEO REMOVED CLICK TO VIEW</a>",$s);
       $s = preg_replace("#\[soundcloud\](.*)\[\/soundcloud\]#Ui","<a href=\"$1\" onclick=\"window.open(this.href); return false;\">SOUNDCLOUD REMOVED CLICK TO VIEW</a>",$s);
+      $s = preg_replace("#\[tweet\](.*)\[\/tweet\]#Ui","<a href=\"$1\" onclick=\"window.open(this.href); return false;\">TWEET REMOVED CLICK TO VIEW</a>",$s);
     }
     else
     {
@@ -135,6 +185,7 @@ class BoardParse
       $s = preg_replace_callback("#\[youtube\](.*)\[\/youtube\]#Ui",array(&$this,'youtube'),$s);
       $s = preg_replace_callback("#\[vimeo\](.*)\[\/vimeo\]#Ui",array(&$this,'vimeo'),$s);
       $s = preg_replace_callback("#\[soundcloud\](.*)\[\/soundcloud\]#Ui",array(&$this,'soundcloud'),$s);
+      $s = preg_replace_callback("#\[tweet\](.*)\[\/tweet\]#Ui",array(&$this,'tweet'),$s);
     }
 
     // start line break stuff
