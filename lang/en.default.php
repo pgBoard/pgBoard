@@ -156,6 +156,7 @@ http://www.google.com/ <-- automatic link
 [soundcloud]http://soundcloud.com/goingslowly/047-railroad-lullabye[/soundcloud]
 [youtube]http://youtube.com/watch?v=WAwLYJYsa0A[/youtube] or [youtube]http://youtu.be/L8xXb-P4wZY[/youtube]
 [vimeo]http://vimeo.com/2467457[/vimeo]
+[tweet]https://twitter.com/dril/status/134787490526658561[/tweet]
 [quote]quote[/quote]
 </pre>
 <div class='clear'></div>
