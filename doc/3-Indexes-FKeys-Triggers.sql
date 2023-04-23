@@ -48,7 +48,7 @@ CREATE INDEX thread_post_member_ip ON thread_post(member_ip);
 CREATE INDEX thread_post_indexed_index ON thread_post(indexed);
 CREATE INDEX thread_post_edited_index ON thread_post(edited);
 CREATE INDEX thread_post_deleted_index ON thread_post(deleted);
-
+CREATE INDEX thread_post_thread_id_date_posted_index ON thread_post(thread_id, date_posted);
 ALTER TABLE thread_post ADD FOREIGN KEY (member_id) REFERENCES member(id);
 ALTER TABLE thread_post ADD FOREIGN KEY (thread_id) REFERENCES thread(id);
 

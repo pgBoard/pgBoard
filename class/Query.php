@@ -341,10 +341,11 @@ class BoardQuery
             ON
               m.id = mp.message_id
             $where
-            AND
-              ".session('id')."
-            IN
-              (SELECT mm.member_id FROM message_member mm WHERE mm.message_id = mp.message_id)
+            AND EXISTS (
+              SELECT mm.member_id
+              FROM message_member mm
+              WHERE mm.message_id = mp.message_id AND mm.member_id = ".session('id')."
+            )
             $ignore
             $order
             $limit
