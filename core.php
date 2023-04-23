@@ -2,8 +2,7 @@
 $cmd = array();
 if(get('cmd'))
 {
-  if(substr(get('cmd'),-1) == "/") $cmd = substr(get('cmd'),0,-1); // removing trailing slashes
-  $cmd = explode("/",(get('cmd')?get('cmd'):"")); // explode by slash
+  $cmd = explode("/", trim(get('cmd')?get('cmd'):"","/")); // explode by slash
 }
 function set_post($i,$value) { $_POST[$i] = $value; }
 function post($i,$numeric=false)
