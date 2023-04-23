@@ -191,24 +191,26 @@ class BoardParse
     // start line break stuff
     $s = str_replace('<br />',NULL,$s);
     $s = nl2br(chop($s));
-
+  
     // remove line breaks inside these tags
     $lbr = array(array("<pre>","</pre>"));
-
+  
     foreach($lbr as $lb)
     {
       $lb1 = $lb[0];
       $lb2 = $lb[1];
       $lb1q = preg_quote($lb1,'#');
       $lb2q = preg_quote($lb2,'#');
-      $lbn = "#".$lb1q."(.+?)".$lb2q."#sie";
-      $s = preg_replace($lbn,"'".$lb1."'.str_replace('<br />','',str_replace('\\\"','\"','$1')).'".$lb2."'",$s);
+      $lbn = "#".$lb1q."(.+?)".$lb2q."#si";
+      $s = preg_replace_callback($lbn,function($matches) {
+        return str_replace('<br />','',$matches[0]);
+      },$s);
       $s = preg_replace("#\<br \/\>(\r\n)".$lb1q."#i","\n".$lb1,$s);
       $s = preg_replace("#".$lb2q."\<br \/\>#i",$lb2,$s);
       $s = preg_replace("#".$lb2q."(\r\n)\<br \/\>#i",$lb2,$s);
     }
     // end line break stuff
-
+  
     return $s;
   }
 }
