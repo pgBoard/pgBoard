@@ -2,25 +2,26 @@ searchd
 {
   read_timeout = 5
   max_children = 300
-  query_log = /path/to/query.log
-  log = /path/to/searchd.log
   max_matches = 10000000
+  query_log = /mnt/search/log/query.log
+  log  = /mnt/search/log/searchd.log
   seamless_rotate = 1
-  pid_file = /path/to/searchd.pid
+  pid_file = /mnt/search/searchd.pid
 }
 
 indexer
 {
-  mem_limit = 1024M 
+  mem_limit = 900M
 }
 
 source main
 {
   type = pgsql
-  sql_host = 
-  sql_user = imeyer
-  sql_pass = 
-  sql_db = bco
+  sql_host = <omitted>
+  sql_port = 5432
+  sql_user = board
+  sql_pass = <omitted>
+  sql_db = board
 }
 
 source thread : main
@@ -30,9 +31,11 @@ source thread : main
   sql_attr_timestamp = date_posted
 }
 
-source thread_post : main 
+source thread_post : main
 {
-  sql_query = SELECT id, body, member_id, date_posted FROM thread_post 
+  sql_range_step = 100000
+  sql_query_range = SELECT min(id),max(id) FROM thread_post WHERE length(body) < 64000
+  sql_query = SELECT id, body, member_id, date_posted FROM thread_post WHERE length(body) < 64000 AND id BETWEEN $start AND $end
   sql_attr_uint = member_id
   sql_attr_timestamp = date_posted
 }
@@ -40,7 +43,7 @@ source thread_post : main
 index thread
 {
   source = thread
-  path = /path/to/thread/thread
+  path = /mnt/search/thread/thread
   morphology = stem_en
   charset_type = utf-8
 }
@@ -48,7 +51,7 @@ index thread
 index thread_post
 {
   source = thread_post
-  path = /path/to/thread_post/thread_post
+  path = /mnt/search/thread_post/thread_post
   morphology = stem_en
   charset_type = utf-8
 }
