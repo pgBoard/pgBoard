@@ -1,9 +1,9 @@
 # a lightweight php+postgresql messageboard
 
 ### Requirements
-* Apache /w mod_rewrite enabled
+* nginx
 * PHP 5x
-* PostgreSQL 8x
+* PostgreSQL 14.4x
 * Sphinx 0.9x
 
 #### Caveats
