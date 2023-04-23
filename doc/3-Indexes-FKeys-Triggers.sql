@@ -115,12 +115,3 @@ CREATE INDEX chat_stamp_index ON CHAT(stamp);
 
 ALTER TABLE chat ADD FOREIGN KEY (member_id) REFERENCES member(id);
 -- end chat
-
-
-CREATE AGGREGATE array_accum
-(
-  sfunc = array_append,
-  basetype = anyelement,
-  stype = anyarray,
-  initcond = '{}'
-);
