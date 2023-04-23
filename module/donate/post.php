@@ -11,7 +11,7 @@ function accept_post()
   }
 
   // send post back to paypal
-  $url = "http://www.paypal.com/cgi-bin/webscr";
+  $url = "https://www.paypal.com/cgi-bin/webscr";
   $ch = curl_init();
   curl_setopt($ch,CURLOPT_URL,$url);
   curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
