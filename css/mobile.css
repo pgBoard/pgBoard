@@ -31,20 +31,18 @@
 }
 
 @media only screen and (max-width: 930px){
-	
+
 	html body {
 		margin: 0;
 		padding: 0px 0px;
 	}
-			
-	img { max-width: 100%; }
 
 	#content {
 		display: block;
 		width: 100% !important;
 		min-width: 320px !important;
 	}
-		
+
 	#content .pad {
 		margin: 0;
 		padding: 0;
