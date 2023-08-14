@@ -30,7 +30,7 @@ function create_post()
 
   if(!preg_match(MEMBER_REGEXP,post('account'))) $output .= ERROR_MEMBER_NAME."<br/>";
 
-  if(preg_match("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$",post('email_signup')))
+  if(preg_match("|^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$|",post('email_signup')))
   {
     if(post('email_signup') != post('email_confirm')) $output .= ERROR_MEMBER_EMAIL_NOMATCH."<br/>\n";
   }

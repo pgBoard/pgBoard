@@ -9,9 +9,9 @@ define("SPHINX_PORT",3312);
 
 define("REGISTRATION_OPEN",true);
 define("REGISTRATION_PASSWORD","membersonly"); // set to false to disable this feature
-define("MEMBER_REGEXP","^[a-z0-9_-]{3,15}$"); // regexp to define valid member name
+define("MEMBER_REGEXP","|^[a-z0-9_-]{3,15}$|"); // regexp to define valid member name
 define("INACTIVITY_LOCK_INTERVAL", "1 year"); // the amount of time a member can only read the board
-define("INACTIVITY_WARNING_INTERVAL", "9 months"); // the amount of time before a warning is displayed for inactivity 
+define("INACTIVITY_WARNING_INTERVAL", "9 months"); // the amount of time before a warning is displayed for inactivity
 
 define("IGNORE_ENABLED",true); // if you disable this be sure to DELETE * FROM member_ignore
 define("IGNORE_PUBLIC",true); // set to false to make ignoring private
