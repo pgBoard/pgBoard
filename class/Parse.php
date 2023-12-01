@@ -105,8 +105,16 @@ class BoardParse
   {
     $url = parse_url($href[1]);
     $host = isset($url['host']) ? $url['host'] : "";
-    // Is the URL from a Twitter hostname with a path component?
-    if(($host == "twitter.com" || $host == "www.twitter.com" || $host == "mobile.twitter.com") && isset($url['path']))
+    // Is the URL from a Twitter or X hostname with a path component?
+    $twitter_or_x_hostnames = [
+      'twitter.com',
+      'www.twitter.com',
+      'mobile.twitter.com',
+      'x.com',
+      'www.x.com',
+      'mobile.x.com',
+    ];
+    if(in_array($host, $twitter_or_x_hostnames) && isset($url['path']))
     {
       // The tweet ID is the last part of the path, and it should be numeric.
       $tweet_id = end(explode('/', $url['path']));
@@ -116,7 +124,9 @@ class BoardParse
         // other tweet embeds on the page.
         $id = rand(1000000,99999999);
         // This is the tweet target element.
-        $embed = '<span id="tt-' . $id . '"></span>';
+        $embed = '<span class="embedded-tweet" id="tt-' . $id . '"></span>';
+        // Alternate text for quoting (just the URL)
+        $embed .= '<span class="embedded-tweet-url" style="display: none;">' . $href[1] . '</span>';
         $embed .= '<script>';
         // If the Twitter widgets JS is already loaded on the page,
         $embed .= 'if (typeof twttr !== "undefined") {';
