@@ -157,6 +157,8 @@ http://www.google.com/ <-- automatic link
 [youtube]http://youtube.com/watch?v=WAwLYJYsa0A[/youtube] or [youtube]http://youtu.be/L8xXb-P4wZY[/youtube]
 [vimeo]http://vimeo.com/2467457[/vimeo]
 [tweet]https://twitter.com/dril/status/134787490526658561[/tweet]
+[instagram]https://www.instagram.com/p/CytFhNQMISg[/instagram]
+[tiktok]https://www.tiktok.com/@frankiedrago/video/7301504666934824234[/tiktok]
 [quote]quote[/quote]
 </pre>
 <div class='clear'></div>
