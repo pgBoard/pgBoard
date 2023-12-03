@@ -68,7 +68,6 @@ function createTweetEmbeds() {
   // The :empty selector ensures we don't try re-embedding tweets that have
   // already been embedded.
   $('.embedded-tweet:empty').each(function() {
-    console.log('calling createTweet with ', $(this).attr('data-tweet-id'));
     twttr.widgets.createTweet(
       $(this).attr('data-tweet-id'),
       this,
