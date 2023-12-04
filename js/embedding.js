@@ -95,13 +95,13 @@ function embedTweet() {
 
 $(document).on('ajaxComplete', function (_event, _jqXHR, ajaxOptions) {
   // This is called every time jQuery's XHR finishes loading, e.g. when a
-  // post is previewed or 'load new posts' is clicked.
-  embedInstagram();
-  // Don't create a loop when the TikTok oEmbed XHR call completes.
+  // post is previewed or 'load new posts' is clicked. However, we don't want
+  // to do anything when the TikTok oEmbed XHR call completes.
   if (!ajaxOptions.url.startsWith('https://www.tiktok.com/oembed')) {
+    embedInstagram();
     embedTikTok();
+    embedTweet();
   }
-  embedTweet();
 });
 
 $(document).ready(function() {
