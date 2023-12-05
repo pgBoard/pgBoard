@@ -1,0 +1,14 @@
+.instagram-media-rendered {
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
+}
+
+.tiktok-embed {
+  max-width: 325px;
+  min-width: 325px;
+  margin: 10px 0px 10px 0px !important;
+}
+
+.embedded-url {
+  display: none;
+}
