@@ -213,6 +213,14 @@ class BoardCore
     return $dot=="t"?true:false;
   }
 
+  function check_undotted($thread_id)
+  {
+    global $DB;
+    if(!session('id')) return false;
+    $dot = $DB->value("SELECT date_posted IS NOT null AND undot IS true FROM thread_member WHERE thread_id=$1 AND member_id=$2",array($thread_id,session('id')));
+    return $dot=="t"?true:false;
+  }
+
   function thread_count()
   {
     global $DB;
