@@ -166,6 +166,19 @@ function undot(id)
   });
 }
 
+function redot(id)
+{
+  var status;
+  $('#redot').html('redotting...');
+
+  $.ajax(
+  {
+    url: '/thread/redot/'+id+'/',
+    cache: false,
+    success: function(html){ $('#redot').html(jQuery.trim(html)); }
+  });
+}
+
 // Member Add Box
 function catch_enter(e)
 {

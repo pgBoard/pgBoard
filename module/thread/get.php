@@ -112,6 +112,8 @@ function view_get()
     // undot
     if($Core->check_dotted(id())) $subtitle .= SPACE.ARROW_RIGHT.SPACE."<a href=\"javascript:;\" onclick=\"undot(".id().");\" id=\"undot\">undot</a>\n";
 
+    if($Core->check_undotted(id())) $subtitle .= SPACE.ARROW_RIGHT.SPACE."<a href=\"javascript:;\" onclick=\"redot(".id().");\" id=\"redot\">redot</a>\n";
+
     $subtitle .= SPACE.ARROW_RIGHT.SPACE."<a href=\"#bottom\" id=\"last\">last &#8681;</a>\n";
   }
 
@@ -405,6 +407,19 @@ function undot_get()
   }
   $DB->query("UPDATE thread_member SET undot=true WHERE thread_id=$1 AND member_id=$2",array(id(),session('id')));
   print "undotted";
+  exit_clean();
+}
+
+function redot_get()
+{
+  global $DB,$Core;
+  if(!session('id'))
+  {
+    print "redot failed.";
+    exit_clean();
+  }
+  $DB->query("UPDATE thread_member SET undot=false WHERE thread_id=$1 AND member_id=$2",array(id(),session('id')));
+  print "redotted";
   exit_clean();
 }
 
