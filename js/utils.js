@@ -169,7 +169,7 @@ function undot(id)
 function redot(id)
 {
   var status;
-  $('#undot').html('redotting...');
+  $('#redot').html('redotting...');
 
   $.ajax(
   {
