@@ -175,7 +175,7 @@ function redot(id)
   {
     url: '/thread/redot/'+id+'/',
     cache: false,
-    success: function(html){ $('#undot').html(jQuery.trim(html)); }
+    success: function(html){ $('#redot').html(jQuery.trim(html)); }
   });
 }
 
