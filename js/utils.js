@@ -117,7 +117,9 @@ function preview_post(form,type,id)
 function quote_post(id)
 {
   var info = $('#post_'+id+' .postinfo').text();
-  var body = jQuery.trim($('#post_'+id+' .postbody').text());
+  var $postbody = $('#post_'+id+' .postbody').clone()
+  $postbody.find('.embedded, script').remove()
+  var body = $.trim($postbody.text());
   $('#body').val($('#body').val()+'[quote]'+info+'\n'+body+'[/quote]\n\n');
 }
 

@@ -18,3 +18,6 @@ document.write('<script type="text/javascript" src="/js/search.js"></script>');
 
 // Utilities
 document.write('<script type="text/javascript" src="/js/utils.js"></script>');
+
+// Embedding
+document.write('<script type="text/javascript" src="/js/embedding.js"></script>');
