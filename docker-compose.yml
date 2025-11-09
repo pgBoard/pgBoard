@@ -1,0 +1,59 @@
+services:
+  db:
+    image: postgres:14
+    container_name: pgboard_db
+    environment:
+      POSTGRES_DB: board
+      POSTGRES_USER: board
+      POSTGRES_PASSWORD: board
+      POSTGRES_HOST_AUTH_METHOD: md5
+      POSTGRES_INITDB_ARGS: "--auth-host=md5"
+    command: postgres -c password_encryption=md5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./doc:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    networks:
+      - pgboard_network
+
+  sphinx:
+    image: macbre/sphinxsearch:3.1.1
+    container_name: pgboard_sphinx
+    volumes:
+      - ./docker/sphinx:/opt/sphinx/conf
+      - sphinx_data:/opt/sphinx/index
+    ports:
+      - "3312:9312"
+    networks:
+      - pgboard_network
+    depends_on:
+      - db
+    command: /bin/sh /opt/sphinx/conf/start-sphinx.sh
+
+  web:
+    build: .
+    container_name: pgboard_web
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/sites-available/default
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+      - sphinx
+    networks:
+      - pgboard_network
+    environment:
+      - DB_HOST=db
+      - DB_NAME=board
+      - DB_USER=board
+      - DB_PASSWORD=board
+
+volumes:
+  postgres_data:
+  sphinx_data:
+
+networks:
+  pgboard_network:
+    driver: bridge

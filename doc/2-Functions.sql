@@ -1,4 +1,4 @@
-CREATE LANGUAGE plpgsql;
+-- CREATE LANGUAGE plpgsql; -- plpgsql is already included in PostgreSQL 14
 
 CREATE OR REPLACE FUNCTION indexOf(anyelement,anyarray) RETURNS integer AS $$
 DECLARE
